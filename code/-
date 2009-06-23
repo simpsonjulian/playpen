@@ -1,0 +1,66 @@
+Adding reference: ant.PropertyHelper
+Detected Java version: 1.6 in: /usr/lib/jvm/java-6-sun-1.6.0.06/jre
+Detected OS: Linux
+Adding reference: ant.ComponentHelper
+Setting ro project property: ant.file -> /home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml
+Adding reference: ant.projectHelper
+Adding reference: ant.parsing.context
+Adding reference: ant.targets
+parsing buildfile /home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml with URI = file:/home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml
+Project base dir set to: /home/jsimpson/Documents/workspace/playpen/code
+ +Target: 
+ +Target: clean
+ +Target: check-archive
+ +Target: archive
+
+BUILD FAILED
+/home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml:23: The element type "target" must be terminated by the matching end-tag "</target>".
+	at org.apache.tools.ant.helper.ProjectHelper2.parse(ProjectHelper2.java:225)
+	at org.apache.tools.ant.helper.ProjectHelper2.parse(ProjectHelper2.java:138)
+	at org.apache.tools.ant.ProjectHelper.configureProject(ProjectHelper.java:96)
+	at org.apache.tools.ant.Main.runBuild(Main.java:683)
+	at org.apache.tools.ant.Main.startAnt(Main.java:199)
+	at org.apache.tools.ant.launch.Launcher.run(Launcher.java:257)
+	at org.apache.tools.ant.launch.Launcher.main(Launcher.java:104)
+Caused by: org.xml.sax.SAXParseException: The element type "target" must be terminated by the matching end-tag "</target>".
+	at org.apache.xerces.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)
+	at org.apache.xerces.util.ErrorHandlerWrapper.fatalError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLScanner.reportFatalError(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at org.apache.xerces.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at org.apache.tools.ant.helper.ProjectHelper2.parse(ProjectHelper2.java:209)
+	... 6 more
+--- Nested Exception ---
+org.xml.sax.SAXParseException: The element type "target" must be terminated by the matching end-tag "</target>".
+	at org.apache.xerces.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)
+	at org.apache.xerces.util.ErrorHandlerWrapper.fatalError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+	at org.apache.xerces.impl.XMLScanner.reportFatalError(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at org.apache.xerces.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at org.apache.tools.ant.helper.ProjectHelper2.parse(ProjectHelper2.java:209)
+	at org.apache.tools.ant.helper.ProjectHelper2.parse(ProjectHelper2.java:138)
+	at org.apache.tools.ant.ProjectHelper.configureProject(ProjectHelper.java:96)
+	at org.apache.tools.ant.Main.runBuild(Main.java:683)
+	at org.apache.tools.ant.Main.startAnt(Main.java:199)
+	at org.apache.tools.ant.launch.Launcher.run(Launcher.java:257)
+	at org.apache.tools.ant.launch.Launcher.main(Launcher.java:104)
+
+Total time: 1 second

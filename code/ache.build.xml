@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<project name="properties" default="test">
+	
+	<target name="test">
+		<property file="${user.home}/.oracle.properties" />
+		<property name="sqlplus" location="${oracle.home}/bin/sqlplus" />
+	</target>
+</project>

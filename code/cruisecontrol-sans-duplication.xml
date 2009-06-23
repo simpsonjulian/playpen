@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<cruisecontrol>
+	<property name="cruise.dir" value="/var/tmp/cruise" />
+	<property name="log.dir" value="${cruise.dir}/logs/" />
+	<property name="projects.dir" value="${cruise.dir}/projects" />
+	<property name="ant.script" value="${cruise.dir}/ant/bin/ant" />
+	
+	<project name="chico" buildafterfailed="false">
+		<listeners>
+			<currentbuildstatuslistener file="${log.dir}/${project.name}/status.txt"/>
+		</listeners>
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="${projects.dir}/${project.name}/"/>
+		</bootstrappers>
+		<log dir="${log.dir}">
+			<merge dir="${projects.dir}/${project.name}/build/test/log"/>
+		</log>
+		<schedule interval="60">
+            <ant antWorkingDir="${projects.dir}/${project.name}"
+             antscript="${ant.script}"
+             uselogger="true"/>
+        </schedule>
+	</project>
+	
+	<project name="groucho" buildafterfailed="false">
+		<listeners>
+			<currentbuildstatuslistener file="${log.dir}/${project.name}/status.txt"/>
+		</listeners>
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="${projects.dir}/${project.name}/"/>
+		</bootstrappers>
+		<log dir="${log.dir}">
+			<merge dir="${projects.dir}/${project.name}/build/test/log"/>
+		</log>
+		<schedule interval="60">
+            <ant antWorkingDir="${projects.dir}/${project.name}"
+             antscript="${ant.script}"
+             uselogger="true"/>
+        </schedule>
+	</project>
+	
+</cruisecontrol>

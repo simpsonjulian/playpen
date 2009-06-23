@@ -1,0 +1,20 @@
+Build Manager - 4:
+  location: London
+  date: "2008-12-01"
+  desc: One of my TW buddies tipped me off to a role that someone he knows is looking to fill - totally .NET, based in London.  I'm happy to make further enquiries.
+  agent: Chris Read
+  type: perm
+
+Build Manager - 3: 
+  location: London
+  date: "2008-11-26"
+  desc: Really interesting build and release management role.  Mixed .NET, Solaris environment, with some Oracle.  Continuous Integration on Windows and Solaris.  I'd apply for this one myself if I wasn't already moving on to another company.
+  agent: Brett Jones
+  type: perm
+
+Build Manager - 1:
+  location: Hampshire
+  date: "2008-10-06"
+  desc: Permanent Build Manager role.  Outside of London.  
+  agent: Ben Tully
+  type: perm

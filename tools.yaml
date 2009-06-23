@@ -1,0 +1,46 @@
+# Build tools
+Project: Apache Ant
+  Url: http://ant.apache.org
+  Person: Steve Loughran
+  Person: Stefan Bodewig
+  Person: Gilles Scokart
+  Person: Xavier Hanin
+Project: Buildr
+  Url: http://buildr.apache.org/
+Project: Gant
+  Url: http://gant.codehaus.org/
+Project: Gradle
+  Url: http://www.gradle.org/
+  Person: Hans Dockter
+  Person: Steven Devijver
+  Person: Tom Eyckmans
+  Person: Adam Murdoch
+  Person:  Russel Winder
+     
+# Ci Servers
+Project: CruiseControl
+  Url:
+  Person: Paul Julius
+  Person: Jeffrey Frederick
+Project: Hudson
+  Url:
+  Person: Kohsuke Kawaguchi
+Project: CruiseControl.net
+  Url:
+Project: CruiseControl.rb
+  Url:
+Project: Cruise
+  Url: http://studios.thoughtworks.com
+Project: Team City
+  Url: http://
+Project: Continuum
+Project: Luntbuild
+Project: buildamatic
+  Person: Ivan Moore
+Project: Bamboo
+  Person: Andy Pols     
+Project: Apache Maven
+  Person: Vincent Massol
+  Url:
+Project: Cargo
+  Person: Vincent Massol

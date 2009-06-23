@@ -1,0 +1,24 @@
+<project default="unit_tests">
+
+	<property name="junit.enabled" value="true" />
+
+	<target name="-check_junit_enabled">
+		<condition property="junit.really.enabled">
+      <and>
+        <equals arg1="${junit.enabled}" arg2="true" />
+      </and>
+    </condition>
+	</target>
+
+	<target name="unit_tests" if="junit.really.enabled" depends="-check_junit_enabled">
+		<mkdir dir="build/test-results"/>
+		<junit>
+			<test name="FooBarImplTest" todir="build/test-results"/>
+			<classpath>
+				<fileset dir="build"/>
+				<fileset dir="lib"/>
+			</classpath>
+			<formatter type="xml"/>
+		</junit>
+	</target>
+</project>

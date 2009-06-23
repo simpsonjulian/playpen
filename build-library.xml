@@ -1,0 +1,48 @@
+<project default="cruise-validator.jar">
+
+    <property name="build.dir" location="build" />
+    <property name="classes.dir" location="${build.dir}/classes" />
+    <property name="lib.dir" location="lib" />
+    <property name="cruisecontrol.dir" location="/var/tmp/cruisecontrol-bin-2.7.1" />
+    <property name="config" location="config.xml" />
+
+    <path id="main">
+        <fileset dir="${lib.dir}" includes="*.jar" />
+        <fileset file="${build.dir}/cruise-conf-validator.jar" />
+        <path refid="cruise" />
+    </path>
+
+    <path id="cruise">
+        <fileset dir="${cruisecontrol.dir}/lib" includes="*.jar" />
+    </path>
+
+    <target name="clean">
+        <delete includeemptydirs="true">
+            <fileset file="cruisecontrol.log" />
+            <fileset dir="${build.dir}" includes="**/*" />
+        </delete>
+    </target>
+
+    <target name="cruise-validator.jar">
+        <mkdir dir="${classes.dir}" />
+        <javac srcdir="src" destdir="${classes.dir}" classpathref="main" />
+        <jar destfile="${build.dir}/cruise-conf-validator.jar">
+            <fileset dir="${classes.dir}" includes="**/*.class" />
+        </jar>
+    </target>
+    
+    <target name="tested-validator" depends="cruise-validator.jar">
+        <javac srcdir="test" destdir="${classes.dir}" classpathref="main" />
+        <junit failureproperty="tests.failed">
+            <classpath refid="main" />
+            <classpath>
+            	<fileset dir="${classes.dir}">
+            	 </fileset>
+            </classpath>
+            <test name="org.juliansimpson.ConfigValidatorTest" />
+            <formatter type="plain" usefile="false"/>
+        </junit>
+        <fail if="tests.failed" message="unit tests failed" />
+    </target>
+
+</project>

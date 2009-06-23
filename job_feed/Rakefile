@@ -1,0 +1,21 @@
+require 'rake/clean'
+
+CLEAN.include("jobs.xml")
+
+task :default => :publish
+
+task :test => :clean do 
+	ruby "job_test.rb"
+end
+
+task :feed => [:clean ] do
+	ruby "feed.rb"
+end
+
+task :html => [:clean ] do
+	ruby "html.rb"
+end
+
+task :publish => :feed do 
+	cp("jobs.xml","/data/www/doc/media.build-doctor.com/")
+end

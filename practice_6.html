@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Build Pattern: The Captive Build Tool</title>
+</head>
+<body>
+
+<o>Check your build tool into your version control system.  Ideally you'd do this in a relative location to your project(s). That way you can have a <em>go.bat</em> or <em>go.sh</em>: a one line wrapper script to call the correct build tool from your project.</p>  Beware any more than one line. [link]
+
+<p>Once you have this set up, a new developer can be cutting (and building) code on their first day.  More importantly, the productivity of the team is bolstered because nobody has to re-install the  build tool, add libraries to it, etc.</p>
+
+<p>I was going to call this pattern <em>Ant Farm</em>, but that would have been a little Java specific.  We'd also need <em>NAnt farm</em> and <em>Phing Pharm</em>. So why do this? The build tool should be vanilla enough to deal with any project.  If that's the case then it becomes a commodity on the developer's computers.  However in this messy world it never seems to work that way.  Here's why:</p>
+
+<ul>
+<li>Someone will have to use a new feature, which calls for everyone to upgrade the build tool</li>
+<li>You'll end up using a task which insists on being on the boot classpath</li>
+<li>One day you'll look at the build tool and find half a dozen key dependencies are resident in it.</li>
+</ul>
+
+<p>So go with the flow.  Make one canonical build tool and <em>make it a damn good one</em>.  Put all the useful tasks in it.  Yes, all of them.  But with one exception.  Make sure that they aren't project specific.  Do you want to have to have the right version of build tool to build and test your application?  No.  Didn't think so.</p>
+
+<p>I searched the web high and low to find an example of this one.  I'm sure one of my erstwhile ThoughtWorks colleagues blogged about this.  Please get in touch to claim your Build Doctor T-shirt if you did.  I know that Dan North made a CVS module that contained a copy of Ant in 2004.  Buildix contained one in 2006.  Surely there's prior art.</p>
+</body>
+</html>

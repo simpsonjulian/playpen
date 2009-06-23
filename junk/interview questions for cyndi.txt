@@ -1,0 +1,20 @@
+1. Who are you, where did you come from, and what do you do?
+
+2. What's going on with CruiseControl Enterprise?
+
+3. I count 4 variations on CruiseControl now: Java, .NET, .rb and now CruiseControl Enterprise.  Not everyone thinks that there's a need for so many, especially split upon language lines.  What do you think?  Do you think that each version satisfies it's own particular niche?
+
+4. Continuous Integration was a revolutionary practice.  CruiseControl was the first implementation of CI.  In the years since it was first deployed, we've come a very long way, and things have become very interesting in the last years especially.  But where are we headed?  Will there be disruptive changes in source control systems and tools so that we don't need CI in it's current form?
+
+5. Do you think that the role of Build Master will disappear as more features and streamlining get added to the present crop of CI tools?
+
+6. Is there a natural conflict of interest between ThoughtWorks and ThoughtWorks Studios?  Do you think your role would be easier if Studios hadn't come from ThoughtWorks?
+
+7. Is there a feature you had wished to add to the upcoming release of CruiseControl Enterprise that you couldn't?  Can you tell us what is is? [assuming that you will want to talk about this]
+
+8. What's your personal favourite feature of CruiseControl Enterprise?  What makes your inner developer happy?
+
+9. I don't believe that build is as important as deployment.  In particular, I think that you can't effectively build code until you understand the deployment approach.  Do you think that the CI tools will ever offer any features here?
+
+10. Does the CCE team keep in touch with the CC community? Are the projects headed in the same direction?
+

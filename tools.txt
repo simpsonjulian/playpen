@@ -1,0 +1,31 @@
+Project: Apache Ant
+ Person: Steve Loughran
+ Person: Stefan Bodewig
+ Person: Gilles Scokart
+ Person: Xavier Hanin
+Project: CruiseControl
+ Person: Paul Julius
+ Person: Jeffrey Frederick
+Project: Hudson
+ Person: Kohsuke Kawaguchi
+Project: CruiseControl.net
+Project: CruiseControl.rb
+Project: Cruise
+Project: Team City
+Project: Apache Maven
+ Person: Vincent Massol
+Project: Buildr
+ Url: http://buildr.apache.org/
+Project: Gant
+ Url: http://gant.codehaus.org/
+Project: Gradle
+ Url: http://www.gradle.org/
+ Person: Hans Dockter
+ Person: Steven Devijver
+ Person: Tom Eyckmans
+ Person: Adam Murdoch
+ Person:  Russel Winder
+Project: Cargo
+ Person: Vincent Massol
+
+

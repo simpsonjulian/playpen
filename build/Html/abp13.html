@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>Ant Best Practices: Use ZipFileSet</title>
+  </head>
+  <body>
+    <p>
+      Welcome to the lucky thirteenth edition of Ant Best Practices.  You proabably guessed this one: Use ZipFileSet.</p>
+    <p>
+      One of these slipped past me recently. We were working on a web project;  the developers added a cache-busting feature to stop CSS stylesheets being cached by the reader's browser. So they wrote build targets to:
+      <ul>
+        <li>fetch the static content</li>
+        <li>lay it out in a directory, nested under an arbitrary kind of keyi</li>
+        <li>zip it all up for deployment later</li>
+      </ul>
+    </p>
+
+    <p>
+      It looked something like this:
+
+<pre><span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">web</span><span class="punct">&quot;</span> <span class="attribute">default</span><span class="punct">=&quot;</span><span class="string">zipfile</span><span class="punct">&quot;&gt;</span>
+
+  <span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">build.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">build</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+  <span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">tmp</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${build.dir}/tmp</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+
+  <span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">zipfile</span><span class="punct">&quot;&gt;</span>
+    <span class="punct">&lt;</span><span class="tag">copy</span> <span class="attribute">todir</span><span class="punct">=&quot;</span><span class="string">${tmp}/static/random_token</span><span class="punct">&quot;&gt;</span>
+      <span class="punct">&lt;</span><span class="tag">fileset</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">code</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+    <span class="punct">&lt;/</span><span class="tag">copy</span><span class="punct">&gt;</span>
+    <span class="comment">&lt;!-- more static files, you getthe idea --&gt;</span>
+    <span class="punct">&lt;</span><span class="tag">zip</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${build.dir}/static.zip</span><span class="punct">&quot;&gt;</span>
+      <span class="punct">&lt;</span><span class="tag">fileset</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${tmp}</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+    <span class="punct">&lt;/</span><span class="tag">zip</span><span class="punct">&gt;</span>
+  <span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+</pre>
+
+      Sounds fine, right?
+    </p>
+
+    <p>
+		  Hmm.  Actually, no.  The approach gets top marks for actually working, but where I should have intervened was the copying of the files about to make the paths that were desired.  In this case, the &lt;zipfileset&gt; lets you pluck files from wherever they might be, and put them into the right place:
+
+<pre><span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">web</span><span class="punct">&quot;</span> <span class="attribute">default</span><span class="punct">=&quot;</span><span class="string">zipfile</span><span class="punct">&quot;&gt;</span>
+  <span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">build.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">build</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+
+ <span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">zipfile</span><span class="punct">&quot;&gt;</span>
+   <span class="punct">&lt;</span><span class="tag">zip</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${build.dir}/static.zip</span><span class="punct">&quot;&gt;</span>
+     <span class="punct">&lt;</span><span class="tag">zipfileset</span> <span class="attribute">prefix</span><span class="punct">=&quot;</span><span class="string">random_token</span><span class="punct">&quot;</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">code</span><span class="punct">&quot;/&gt;</span>
+   <span class="punct">&lt;/</span><span class="tag">zip</span><span class="punct">&gt;</span>
+ <span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+</pre>
+    </p>
+
+    <p>
+       Really, that's it.  I was quite surprised that it made Eric's original list of practices: It's quite a simple change to make.   I'm thinking this should be a refactoring.  It'd be great to invoke an automated refactoring and introduce a zipfileset whenever you liked.  Anyway, do this and it'll make your build faster and easy to read.  And we like that.
+    </p>
+  </body>
+</html>

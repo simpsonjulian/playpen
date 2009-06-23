@@ -1,0 +1,28 @@
+&lt;project name=&quot;unrefactored&quot; default=&quot;compile_and_configure_web_app&quot;&gt;
+
+	&lt;target name=&quot;compile_and_configure_web_app&quot;&gt;
+		&lt;delete dir=&quot;build&quot; /&gt;
+		&lt;mkdir dir=&quot;build/classes&quot; /&gt;
+		&lt;javac srcdir=&quot;src&quot; destdir=&quot;build/classes&quot;/&gt;
+		&lt;!-- the config file  --&gt;
+		&lt;copy file=&quot;src/web.xml&quot; todir=&quot;build/web.xml&quot;&gt;
+			&lt;filterset&gt;
+				&lt;filter token=&quot;DB_HOST&quot; value=&quot;oradvdb17&quot;/&gt;
+			&lt;/filterset&gt;
+		&lt;/copy&gt;
+		&lt;mkdir dir=&quot;build/WEB-INF/lib&quot; /&gt;
+		&lt;!-- build the jar file --&gt;
+		&lt;jar  jarfile=&quot;build/WEB-INF/lib/webapp.jar&quot; 
+				basedir=&quot;build/classes&quot;
+				manifest=&quot;src/manifest.mf&quot;&gt;
+		&lt;/jar&gt;
+		&lt;!-- and the war file  --&gt;
+		&lt;war file=&quot;build/webapp.war&quot; 
+					webxml=&quot;build/web.xml&quot;
+					manifest=&quot;src/manifest.mf&quot;
+					basedir=&quot;build&quot;&gt;
+			&lt;include name=&quot;**/*.jar&quot; /&gt;
+		&lt;/war&gt;
+	&lt;/target&gt;
+
+&lt;/project&gt;

@@ -1,0 +1,11 @@
+<project name="my_great_web_app">
+
+<!-- snip -->
+
+  <target name="backend-zip-static">
+    <zip zipfile="${build}/backend-static.zip">
+	    <fileset dir="${backend.static.dir}"/>
+    </zip>
+  </target>
+
+</project>

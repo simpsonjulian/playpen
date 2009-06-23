@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Remember it was Make that started it all.</title>
+<style lang="text/css">
+.normal {}
+.namespace { color: #B66; font-weight: bold; }
+.tag { color: #F88; }
+.comment { color: #005; font-style: italic; }
+.punct { color: #447; font-weight: bold; }
+.string { color: #944; }
+.number { color: #F99; }
+.attribute { color: #BB7; }
+
+</style>
+</head>
+<body>
+
+Sometimes I have a whole meagerie of pet hates.  Today I'm just going to share one: poor target names in build files.  Yes, that's scratching the surface: there's plenty of other things to get wrong in your build.  But today's gripe is target names.   Here's an anonymised example from a real project:
+
+<pre><span class="punct">&lt;?</span><span class="tag">xml</span> <span class="attribute">version</span><span class="punct">=&quot;</span><span class="string">1.0</span><span class="punct">&quot;</span> <span class="punct">?&gt;</span>
+<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">project</span><span class="punct">&quot;</span> <span class="attribute">default</span><span class="punct">=&quot;</span><span class="string">tests</span><span class="punct">&quot;</span> <span class="attribute">basedir</span><span class="punct">=&quot;</span><span class="string">..</span><span class="punct">&quot;&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">run-database-tests</span><span class="punct">&quot;</span> <span class="attribute">description</span><span class="punct">=&quot;</span><span class="string">Runs all database tests</span><span class="punct">&quot;</span> 
+		<span class="attribute">depends</span><span class="punct">=&quot;</span><span class="string">foo-run-database-tests, bar-run-database-tests, baz-run-database-tests</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span> 
+
+	<span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">produce-docs</span><span class="punct">&quot;</span> <span class="attribute">description</span><span class="punct">=&quot;</span><span class="string">Produces javadocs for the project</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">echo</span> <span class="attribute">message</span><span class="punct">=&quot;</span><span class="string">Building docs for ${common.dir}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">run-javadoc</span> <span class="attribute">dest</span><span class="punct">=&quot;</span><span class="string">${common.dir}</span><span class="punct">&quot;</span> <span class="attribute">source</span><span class="punct">=&quot;</span><span class="string">${common.dir}/src/java/com/company/project/common/</span><span class="punct">&quot;/&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">produce-diagrams</span><span class="punct">&quot;</span> <span class="attribute">description</span><span class="punct">=&quot;</span><span class="string">Produces diagrams for the project</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">run-springviz</span> <span class="attribute">dest</span><span class="punct">=&quot;</span><span class="string">${foo.dir}</span><span class="punct">&quot;</span> <span class="attribute">config</span><span class="punct">=&quot;</span><span class="string">${foo.dir}/config/WEB-INF</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">run-springviz</span> <span class="attribute">dest</span><span class="punct">=&quot;</span><span class="string">${bar.dir}</span><span class="punct">&quot;</span> <span class="attribute">config</span><span class="punct">=&quot;</span><span class="string">$baradmin.dir}/config/WEB-INF</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">run-springviz</span> <span class="attribute">dest</span><span class="punct">=&quot;</span><span class="string">${baz.dir}</span><span class="punct">&quot;</span> <span class="attribute">config</span><span class="punct">=&quot;</span><span class="string">${baz.dir}/config/WEB-INF</span><span class="punct">&quot;/&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+	
+<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+</pre>
+
+<p>What on earth would you do but run the database tests and produce the javadoc?  Aren't the verbs superfluous here?  </p
+
+What if instead of:
+<blockquote>
+ant produce-docs
+<blockquote>
+You had
+</blockquote>
+ant db-tests docs
+</blockquote>
+
+<p>It all makes sense when you think that most build tools are evolved from make.  Make was written in [year] by [person] at [bell labs?].  Just about every unix distribution ever includes it (or a bastardized version, but that's another stoy). Microsoft implemented it.  If you're interested in build tools, have a play with make.</p>
+
+<p>Where was I?  Ah yes: make is a verb.  Make is a verb, and the target is a object.</p>
+
+<p>Make me an object.  Verb, subject, [what?], object.</p>
+
+<p>Or for short, make object.</p>
+
+<p>Once you keep the verb in the build tool, you don't feel the need to put a verb in every target.  Still, I doubt that Apache Ant would have flown with a name like <em>Jake</em> or <em>Ache</em>.  And what they have called NAnt?   Don't go renaming your build tools on my account, but when you write a target, pretend you're building with Make.</p>
+
+</body>
+</html>

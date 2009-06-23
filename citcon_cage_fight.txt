@@ -1,0 +1,96 @@
+Continuous Integration Cage Fight
+Moderator: Tom Sulson
+Contestants: Team City, Cruise, Build Forge, Hudson, Build-a-matic, Pulse
+Format: 5 minute demonstration and talk per developer
+
+Introduction
+
+CITCON always has a fair turnout of CI vendors.  We were particularly blessed this year, which is why this session turned out so well.  I was asked to sport my Asus eepc and take notes. I also captured a little video from each talk.
+
+Build-a-matic. (Ivan Moore) 
+----------
+See Ivan's notes
+Open source.  Supports subversion and perforce.
+Unique feature: does a binary search between svn revisions to work out which commit broke the build.
+Unique feature: Can re-run a build if you think you have flaky test infrastructure.
+Unique feature(?) can display an icon to represent the developers.  This seems to have more impact on the developers.
+
+CruiseControl (the Java one) (represented by Paul Julius)
+-----------
+Open source.
+Since 2001.  Oldest tool of it's kind.
+Most VCS support (everything from Accurev to VSS) of all the CI servers.
+Very flexible
+File based configuration works well with CI.
+
+Hudson (represented by Eric Lefere)
+-----------
+Open source.
+Easy to configure - GUI based
+Attractive interface
+good visual representation of build status
+Localised in 8 languages
+Distributed, can choose the target (TC does this)
+Multi-matrix things work out the combinations.
+Rich plugin community.
+
+
+Cruise (represented by Chris Read) 
+----------
+Closed source
+2 agents, free
+$1800/yr for up to 3-6 agents.
+$10,000 35
+Almost from scratch rewrite.  Uses the Ant Builder from CruiseControl.
+Pipeline allows promotion via modification sets though envs.
+Stages have jobs.
+Jobs can depend on resources.
+Records a flash movies of selenium tests.
+Nice tabs with metric results.
+LDAP integration
+
+Compilation done in stage one.  Artifacts are kept internally by cruise. You ask Cruise to give you them.
+
+Jason Sankey from Yutubi - Pulse
+-------------------------
+Closed source 
+Unlimited license: $1500 $2500 $4000, depending on agent numbers, perpetual license, one year's support.  (source code access if you buy the license).
+Idea is an Easy and flexible CI server
+Supports personal builds, distributed builds and plugins
+Keep configuration in SVN
+unique feature: reuse of config facts inside the config via templates
+Test config before commit
+
+Yegor Yarko - Jetbrains guys - Team City
+--------------------------
+20 devs, 20 projects, enterprise $3000, more agents are $300 each.
+
+config is in xml or web
+build agents
+security
+Unique feature: Gives failed test feedback before build finishes.
+Find new failed builds
+private builds
+Unique feature: IDE plugins
+Unique feature: auto commit
+code analysis
+very developer friendly 
+Unique feature: stop a build
+good plugins support
+Probably the best .NET support ...
+open sourcing some of the plugins
+
+Louis from IBM Rational Build forge
+-----------------------------------
+you pay for concurrent users
+Environments are mapped
+Build agents have manifests that describe their facts.
+Runs commands as lowest common denominator
+Including scm access
+Supports aix, nintendo ds vxwrks, imb midrange systems
+Easy to //ise
+Can parse tool output and fail on a string
+Ldap
+Unique feature: very wide agent support
+
+

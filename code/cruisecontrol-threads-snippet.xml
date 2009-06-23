@@ -1,0 +1,8 @@
+<cruisecontrol>
+	<system>
+		<configuration>
+			<threads count="2" />
+		</configuration>
+	</system>
+<!-- rest of config file suppressed -->
+</cruisecontrol>

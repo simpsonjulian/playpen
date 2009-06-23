@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cruisecontrol>
+	<project name="cheezburger">
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="/icanhazpath" />
+		</bootstrappers>
+		<modificationset quietperiod="60">
+			<svn localWorkingCopy="/icanhaspathpleez"  />
+		</modificationset>
+		<schedule interval="60">
+			<exec command="/bin/true"/>
+		</schedule>
+		<log dir="build/logs"/>
+	</project>
+</cruisecontrol>
+

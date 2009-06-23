@@ -1,0 +1,11 @@
+<project default="properties">
+
+	<target name="properties">
+		<mkdir dir="build" />
+		<property name="value" value="build" />
+		<echo>
+			here's the one with a value ${value}
+		</echo>
+		<touch file="${value}/value.txt" />
+	</target>	
+</project>

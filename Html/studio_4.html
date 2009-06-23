@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="KWord HTML Export Filter Version 466447 " />
+<title>studio_4.html</title>
+<style lang="text/css">
+<%= File.read("xml.css") %>
+</style>
+</head>
+<h1>Bootstrap with a Bootstrapper</h1>
+<h2>CruiseControl Enterprise Best Practices, part 4</h2>
+<p>In my last <a href="http://studios.thoughtworks.com/2007/11/8/configuring-cruisecontrol-the-cruisecontrol-way">post</a>  I demonstrated using a bootstrapper to make sure that the configuration for CruiseControl was up to date. I'd like to expand on that in this post. Here's the question that led to the creation of the <a href="http://cruisecontrol.sourceforge.net/main/configxml.html#bootstrappers">Bootstrappers</a> in CruiseControl: How do you fix the build when you have broken your build files?</p>
+
+<p>Picture this: you're cheerfully making a change to the build to support a new feature. Your colleague Bob walks up to your desk for a chat about the feature. But he hasn't burst your <a href="http://www.joelonsoftware.com/articles/fog0000000043.html">bubble</a> yet. You were pretty much done anyway, so you check in quickly and turn around to engage Bob in a conversation about work before he can mention  fishing.</p>
+
+<p>So eventually Bob wanders over the water cooler to entrap someone else, and you get back to your work. You look over to the screen that displays your build status, and it's red! &quot;Amateurs.&quot; you think. &quot;Always breaking the build&quot;. You refresh the CruiseControl Dashboard to see which checkins were in that build (everybody checks in frequently here), to find out that the build failed in about a second because the build.xml is invalid.</p>
+
+<p>Suddenly a bit more tolerant of your build breaking colleagues, you look at the build.xml file., which is still open in your IDE. There it is.  A dirty great hash symbol at the end of the file. &quot;Curse my keyboard layout!&quot; you exclaim. When you typed the last line of the file, you missed the return key and hit '#'. You didn't see that in your haste to check in, and now the build script won't update the checkout. The build file won't run as it is invalid. The very first thing that it would normally do is update the working copy on the CruiseControl server, to get the latest changes. Looks like you'll need to check in the fix and then get on the CruiseControl machine and update the working copy yourself. D'oh.</p>
+
+<p>Having been there (and sometimes not needing an imaginary colleague to break the build file), I can vouch for the bootstrapper approach:</p>
+<%= to_html("code/cruisecontrol-bootstrapper.xml")  %>
+
+<p>In the example above, the bootstrapper will always fetch the latest files from Subversion.  Bootstrappers are run before a build takes place, regardless of whether a build is necessary or not, but not if the build is paused.  But why stop there?  That will make sure that you get the most recent build files, which have responsibility for getting the latest changes from your VCS.  But should your build need to do that?  No.  The bootstrapper can update all the working files, if you configure it like this:</p>
+<%= to_html("code/cruisecontrol-bootstrapper-snippet.xml")  %>
+
+<p>Now CruiseControl will update all the recently changed files in the working copy on your server.  There used to be an issue with this approach - Bob will explain: &quot;It's like the time I caught a 10 pound marlin, but the line snapped.  I checked in my change, saw a build get triggered shortly afterwards, and I waited for the build to complete.  My change was there in the list of modifications, but the QA team said that change wasn't in that build!&quot;</p>
+
+<p>This problem used to happen if you checked in a change while CruiseControl was bootstrapping and fetching the latest revision.  Because of CruiseControl's history with non-atomic version control systems, it internally refers to change sets by date.  The CCE team at ThoughtWorks Studios have fixed this in CruiseControl 2.7.1 by adding the <em>useLocalRevision</em> to the Subversion modificationset:</p>
+
+<%= to_html("code/cruisecontrol-bootstrapper-localrev-snippet.xml")  %>
+
+<p>Once the bootstrapper has updated the project's working copy on the CruiseControl server, it makes the Subversion revision number of the working copy available to the ModificationSet.  When the ModificationSet attempts to work out what changes are new in that build, it then constrains it's query to the revision number of the working copy.  This makes CruiseControl accurately report changes. Its a huge boost to larger projects that use CruiseControl.  This will also save you from more conversations with Bob.  Another useful side effect of the useLocalRevision property with Subversion is that the Subversion reposistory revision number gets passed to the build as a property called<em>${svnrevision}</em>.  This makes it trivial to tag the build later at the correct revision.</p>
+
+<p>While we're on the subject of tweaks for CruiseControl under Subversion (or any truly atomic VCS): never use a QuietPeriod.  The QuietPeriod is there to stop CruiseControl prematurely building when you're using CVS or another non-atomic VCS. It will only slow down your build.</p>
+
+<p>There are more bootstrappers available to play with for fun and profit: CruiseControl supports many Version Control Systems and most of the VCS plugins have an optional bootstrapper.  Bob and I have explained the big picture on VCS bootstrappers above, so I'll outline the rest of them here:</p>
+
+<ul>
+<li><b>AntBootStrapper</b> will execute an Apache Ant file before the project builds.  Most of the time you shouldn't need it, but  I have seen it used to fetch dependencies and then trigger a build if those dependencies have changed.</li>
+<li><b>ExecBootStrapper</b> will execute any script or command that you tell it to.</li>
+<li><b>LockFileBootStrapper</b> is an interesting one.  Read on for more.</li>
+</ul>
+
+<p>Do you have many projects on the same CruiseControl server? Good.  Do you have two or more Builder Threads configured?  Do you build two or more projects at once? Great.  Multiple, simultaneous projects is something that CruiseControl has supported since the summer of 2004.   Do 2 of those projects sometimes compete for the same resources?.  Oh my, that's bad.  Especially annoying if it only happens once a day or so.  Here's what you do:</p>
+
+<%= to_html("code/cruisecontrol-bootstrapper-lockfile-snippet.xml") %>
+
+<p>The <em>lockfilebootstrapper</em> will run before the build, like a bootstrapper should.  It will look for the lockfile for the name of the of the project.  If the lockfile exists and the name of the project inside doesn't match the expectation set in the configuration, it will cancel the entire build attempt.  This way, one project can warn all the others that it is building, so you never see the two projects that don't sit well together executing at the same time.  However, you could have 5 other builds that don't share the same external dependencies that the first project does, and they can run just fine at the same time.  The <em>lockfilelistener</em> will cleanup any old lock files left oiver after the build, so you don't prevent some builds running all the time.</p>
+
+<p>&quot;Hang on,&quot; says Bob: &quot;I just had to wait 10 minutes for the FooLib project to build! What's going on?.&quot;  &quot;Now Bob.&quot; you say, not unkindly: &quot;You know there's only one integration test server.  Now, so does the CruiseControl build.  Next time you go fishing with the CTO, you can tell him about the delays to the project and ask if we can spend some of next year's budget on for another test server.&quot; </p>
+
+<p>&copy;Julian Simpson 2007. All rights reserved.</p>
+</body>
+</html>

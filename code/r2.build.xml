@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<project name="project" default="tests" basedir="..">
+	
+	<target name="run-database-tests" description="Runs all database tests" 
+		depends="foo-run-database-tests, bar-run-database-tests, baz-run-database-tests" /> 
+
+	<target name="produce-docs" description="Produces javadocs for the project">
+		<echo message="Building docs for ${common.dir}"/>
+		<run-javadoc dest="${common.dir}" source="${common.dir}/src/java/com/company/project/common/"/>
+	</target>
+	
+	<target name="produce-diagrams" description="Produces diagrams for the project">
+		<run-springviz dest="${foo.dir}" config="${foo.dir}/config/WEB-INF"/>
+		<run-springviz dest="${bar.dir}" config="$baradmin.dir}/config/WEB-INF"/>
+		<run-springviz dest="${baz.dir}" config="${baz.dir}/config/WEB-INF"/>
+	</target>
+	
+</project>

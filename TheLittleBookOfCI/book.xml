@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding='ISO-8859-1'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+
+[
+ <!ENTITY version "0.01">
+]>
+
+<!--
+Comments just like html
+-->
+
+<book lang="en">
+<bookinfo>
+	<title>The Little Book of CI</title>
+	<authorgroup>
+		<author>
+			<firstname>Julian</firstname>
+			<surname>Simpson</surname>
+			<affiliation>
+				<address>
+					<email>medic@build-doctor.com</email>
+				</address>
+			</affiliation>
+		</author>
+	</authorgroup>
+	<graphic fileref="1017600536_3a7c3e4a34_m.jpg"/>
+</bookinfo>
+
+<chapter id="introduction">
+		<title>Introduction</title>
+
+<para>Of all the practices of an Agile developer, I think Continuous Integration one of the most accessible and immediately valuable.  Even if you don't practice TDD on your project, you still keep some value from a CI process.  Of course, if you do practice TDD you will gain a lot.  This little book attempts to pass on some good patterns of Continuous Integration in a straightforward way. Your feedback is valuable - how did I do?</para>
+
+</chapter>
+
+<chapter id="developer-friendly">
+	
+	<title>Does your CI system look like a developer build?</title>
+
+	<para>If you don't make a CI system that's close enough to a developer's build environment, they won't be able to reproduce a broken CI build on their computers. That's not at all annoying for everyone. So your ideal CI system will behave like a developer's computer: tests will reliably fail and pass in the same way, ideally using the identical build files. </para>
+
+<para>Of course, if you take this too far, you effectively have a developer's computer as a CI server. Which may limit things.</para>
+</chapter>
+<chapter id="reality">
+	<title>But does your CI system reflect reality??</title>
+	<para>The developers might have their own version of a deployment. But are you causing pain by doing that and not exercising (uh, testing) the real deployment? You'll cause a world of pain if they consider something ready to test and don't know if you can deploy the cod or not.</para>
+	<para>Having said that:  sometimes things can be slow in production.  CI is meant to be everything but slow.  So if you have an tardy enterprise application that takes 10 minutes to start and deploy your application, you may not be able to justify keeping a development team waiting.  After much consideration (and believe me, my personality type has consideration in spades), I think you should consider a parallel build: one that quietly picks up the codebase, deploys it, and runs some simple smoke tests.  Don't worry about trying to synchronise that with other build activity: let it do it's job of warning you that the codebase is no longer deployable.</para>
+</chapter>
+<chapter id="trace">
+	<title>Is it traceable?</title>
+	
+	<para>When a developer checks in, do you know about it?  You should.  It &apos;s possible to have a nightly build that  might go fetch it&apos;s updates from your VCS.  But would you ever want to?  The entire point of CI is to make the activies of ever team member visible to the rest of the team.</para>
+	
+	<para>Likewise, if you have some common code that is managed as binaries, do you want to know that common.jar was updated?  Or do you want to be able to see that common.jar was updated because John added a new class to it (that is used in 2 projects)</para>
+</chapter>
+<chapter id="dry">
+	<title>Wet or dry?</title>
+	<para>The pragmatic programmers gave us DRY: Don&apos;t repeat yourself.  They were discussing DRY in the context of software development, but we can use that too.  When you configure your CI tool to call the build tool, which will invoke some tool that might build something on your project, little values keep coming up again and again: The name of the branch that you are building.  The name of the project.  Try to re-use these wherever possible.  For example you can often pass many values to your build tool from your CI tool in the shape of command line arguments, or system properties.</para>
+</chapter>
+<chapter id="lifting">
+<title>
+	Let the server do the work
+	</title>
+<para>
+	Some projects end up with a build that does a lot of extra work apart from building and testing code: fetching things from the Version Control System, publishing artefacts, tagging the VCS, etc.
+	</para>
+<para>
+All this activity is important, but where should the responsibility lie for doing it?
+</para>
+</chapter>
+<chapter id="about">
+	<title>About the author</title>
+	<para>Julian Simpson is an expert system administrator and build manager in the City of London.  he also runs the Build Doctor blog.</para>
+	<para>He lives with his family in Woking, Surrey.</para>
+	<graphic fileref="license.png" />	
+	<graphic fileref="logo.jpg" />
+	<para>
+This work is licenced under the Creative Commons Attribution-Non-Commercial-Share Alike 2.0 UK: England &amp; Wales License. To view a copy of this licence, visit http://creativecommons.org/licenses/by-nc-sa/2.0/uk/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.</para>
+
+</chapter>
+
+</book>

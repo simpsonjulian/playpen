@@ -1,0 +1,10 @@
+Title:
+
+Deployable software is the goal
+
+Abstract:
+
+The lean movement is growing rapidly.  It's hard to dismiss this one when one of the best car makers in the world got there by being lean.  We're getting better at applying that to the business of writing software, too.  But what about the way we build then  test the software?  Are the build managers and testers part of the party?  I'm not convinced that they are at the party.  Why should they be there?  If we were organizing a party we'd be great at getting the revellers to the house, in the front door and given a drink.  They'd be in the front room with a glass in their hand.  But we wouldn't know how to send them merrily on their way, having made new friends and spilled that red wine behind the couch.
+
+Similarly when we write software, we're very good at getting requirements and turning them into code.  To turn that beautiful code into working software we need to deploy and test it. Often, we fail to emphasise the latter as well as the former.  Do you have a backlog of "code complete" software waiting to be deployed, tested, signed-off and made live?  Do you work in 1 or 2 week iterations but only release to production once a year?  Is it a huge ceremony when you do finally deploy?  Then you have Muda.  Waste.  It's s sign that your lean transformation has only gone part-way to your goal.
+

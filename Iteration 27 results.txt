@@ -1,0 +1,51 @@
+Bugs:
+- 'See Another Competitor' not showing after voting via Ajax
+- Views Count incorrect on site
+- Incorrect redirection if round is inactive
+- Homepage 500's if no current competition because upcoming competition returns nil
+- news list bullet issues
+- Homepage 500 page when 1st round closed and final round active
+- Close me button should disappear after closing
+- Alt tag on Facebook says 'twitter'
+- missing thumbnail shouldn't break finalist grid
+- ' you have one days to rate'
+- intermittent lightbox logins
+- voted for bug
+
+
+Tasks:
+- Competition link should resolve to finalists
+- Rotate central panel every 24 hours
+- Add competition links of competition live
+- Remove watch more auditions on competition performance pages
+- Enhance explore navigation
+- Change footer to just links
+- Change 'auditions' and 'finalist' text
+- Change play from 30 seconds to entire video on finalists page
+- Add time to competition dates
+- Link to rounds from player
+- Change 'get involved' button on home page to 'go vote'
+- Move videos up
+- Order by ratings on profile page
+- reload explore bindings
+- 'sign in' on explore bar
+- stop winners deleting thier winning performances
+- replace editors picks with 'top 20 this morning'
+- add links to carousel for finalists
+- make it clear in profiles that performer is in heats
+- make it clear on search which is in heats
+- maintaining selenium test
+
+Stories:
+- As a show producer I would like to announce competitions so that information about them is publicly available
+- As a show producer when the final round has been closed and the competition end date has not passed I don't want to see the winner border on the player in performance show page so that no-one knows the winner before the party
+- In order to effectively place my votes as a member I want to see an overview of the current finalists
+- As a viewer I want to see the time in hours and minutes of a round start and end so I know what is happening in a competition
+- As a judge I want to see the performances I have voted on
+- As a viewer I want to have the home page communicate the state of the competition so that I know what is going on
+- As a viewer I want to know the current competition state so that I understand what's going on
+- In order to better understand a competition as a visitor I want to see a description of the competition workings and the prizes on offer
+- As a viewer I want to see the top rated videos on the best videos page so that I can see the best
+- As a viewer I want to see big thumbnails when there is less than 12 finalist so I can see better
+- As a show producer I only want to see competitions in planning on public in shortlist drop-down so I can add people easier
+- As a viewer I want the round page to show good talent so I know there is good talent there

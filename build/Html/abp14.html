@@ -1,0 +1,101 @@
+<html>
+<head><title>ABP: The Clean Test</title></head><body>
+<p>
+This is the penultimate article in the Ant Best Practices series.  Last time, we discussed the ZipFileSet. That is a mere hygiene issue, a point of style compared to today's article.  This article is a subject very close to my heart:  only dong necessary work.  If you don't execute the clean target, (do tell me your build has a clean target - see article [what is the address of the clean article?]) and you didn't change any of files in your project, what should happen?</p?
+
+<p>I'll tell you what should happen.  Nothing.  Diddly.  Well, no compilation.  If no compilation happened, should it bother packaging up artefacts or anything?  I don't think so.  If you want to run tests, so be it; you might have an unreliable test.  But for the most part, nothing should happen if nothing changed.</p>
+<p>I could go on about the history of build tools. I could tell you it's more efficient to have this behaviour. That may not persuade you that it's the right thing to do.  So think of it like this.  <i>If you change a single CSS file on your project, do you want to go and recompile all your code and run your tests?</i>  Hold that thought.</p>
+
+<p>On the first and largest project that I ever did at ThoughtWorks, the fast build was 45 minutes.  Don't even go there with the build that did automated functional tests.  One evening I was working late with one of the performance testers.  The  CruiseControl build was firing all the time.  I realised that every time he did a performance test run, he checked in the results into the VCS alongside the code. That triggered a build.  Whoops.  We didn't exactly have capacity to spare sometimes.  I have since sat there on many a project and watched builds trigger because a developer had to make the tiniest change. It's dull to sit through a tedious CI build, just because the build didn't discriminate between the files that had changed.</p>
+
+<p>This stuff can make a difference.  Maybe not today.  Maybe not tomorrow.  But when your project has grown to a larger size, rest assured that it will be hard to change these things.  So how do you convince Ant to be less zealous?  Start by making sure that your default target doesn't depend on your 'clean' target. When you refactor code and move classes around, you might need to execute the clean target.  But treat that as the exception and not the rule.</p>
+
+<p>That's fine until you start packaging up the code in zip or jar files.  What happens then?  The <strong>uptodate</strong> task is your friend.  This little guy will take a look at the sources and output of a task, and tell you if you should bother running it.  Take a look:
+<pre><span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">default</span><span class="punct">=&quot;</span><span class="string">archive</span><span class="punct">&quot;&gt;</span>
+
+  <span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">build.directory</span><span class="punct">&quot;</span> <span class="attribute">location</span><span class="punct">=&quot;</span><span class="string">build</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+  <span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">source.directory</span><span class="punct">&quot;</span> <span class="attribute">location</span><span class="punct">=&quot;</span><span class="string">src</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">archive</span><span class="punct">&quot;</span> <span class="attribute">location</span><span class="punct">=&quot;</span><span class="string">${build.directory}/stooges.zip</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+
+	<span class="punct">&lt;</span><span class="tag">fileset</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${source.directory}</span><span class="punct">&quot;</span> <span class="attribute">includes</span><span class="punct">=&quot;</span><span class="string">*.xml</span><span class="punct">&quot;</span> <span class="attribute">id</span><span class="punct">=&quot;</span><span class="string">archive.files</span><span class="punct">&quot;/&gt;</span>
+
+	<span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">clean</span><span class="punct">&quot;&gt;</span>
+	  <span class="punct">&lt;</span><span class="tag">delete</span><span class="punct">&gt;</span>
+     <span class="punct">&lt;</span><span class="tag">fileset</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${build.directory}</span><span class="punct">&quot;</span> <span class="attribute">includes</span><span class="punct">=&quot;</span><span class="string">**/*</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">delete</span><span class="punct">&gt;</span>
+  <span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+
+  <span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">check-archive</span><span class="punct">&quot;&gt;</span>
+	  <span class="punct">&lt;</span><span class="tag">echo</span> <span class="attribute">message</span><span class="punct">=&quot;</span><span class="string">Checking zip file time stamp</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	  <span class="punct">&lt;</span><span class="tag">uptodate</span> <span class="attribute">property</span><span class="punct">=&quot;</span><span class="string">-archive.is.unchanged</span><span class="punct">&quot;</span> <span class="attribute">targetfile</span><span class="punct">=&quot;</span><span class="string">${archive}</span><span class="punct">&quot;&gt;</span> 
+		  <span class="punct">&lt;</span><span class="tag">srcfiles</span> <span class="attribute">refid</span><span class="punct">=&quot;</span><span class="string">archive.files</span><span class="punct">&quot;/&gt;</span> 
+		<span class="punct">&lt;/</span><span class="tag">uptodate</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+
+  <span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">archive</span><span class="punct">&quot;</span> <span class="attribute">unless</span><span class="punct">=&quot;</span><span class="string">-archive.is.unchanged</span><span class="punct">&quot;</span> <span class="attribute">depends</span><span class="punct">=&quot;</span><span class="string">check-archive</span><span class="punct">&quot;&gt;</span>
+	  <span class="punct">&lt;</span><span class="tag">echo</span> <span class="attribute">message</span><span class="punct">=&quot;</span><span class="string">Making a zip file</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">zip</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${archive}</span><span class="punct">&quot;</span> <span class="punct">&gt;</span>
+		  <span class="punct">&lt;</span><span class="tag">fileset</span> <span class="attribute">refid</span><span class="punct">=&quot;</span><span class="string">archive.files</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span> 
+		<span class="punct">&lt;/</span><span class="tag">zip</span><span class="punct">&gt;</span>
+  <span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+
+<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+</pre> 
+</p>
+
+<p>The first time that you run this build, it does what you expect: makes a zipfile.  The clever bit is what it does the second time you run it.  It doesn't bother.  Here's the first run:
+
+<pre>
+
+Detected Java version: 1.6 in: /usr/lib/jvm/java-6-sun-1.6.0.06/jre
+Detected OS: Linux
+parsing buildfile /home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml with URI = file:/home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml
+Project base dir set to: /home/jsimpson/Documents/workspace/playpen/code
+[antlib:org.apache.tools.ant] Could not load definitions from resource org/apache/tools/ant/antlib.xml. It could not be found.
+Build sequence for target(s) `archive' is [check-archive, archive]
+Complete build sequence is [check-archive, archive, clean, ]
+
+check-archive:
+     [echo] Checking zip file time stamp
+ [uptodate] The targetfile "/home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip" does not exist.
+
+archive:
+     [echo] Making a zip file
+      [zip] Building zip: /home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip
+      [zip] adding entry iggy.xml
+      [zip] adding entry dave.xml
+
+BUILD SUCCESSFUL
+Total time: 1 second
+</pre>
+</p>
+
+<p>You can tell that it was checking the lie of the land before it executed the main task.  You might like the output from the second task:
+<pre>
+
+Detected Java version: 1.6 in: /usr/lib/jvm/java-6-sun-1.6.0.06/jre
+Detected OS: Linux
+parsing buildfile /home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml with URI = file:/home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml
+Project base dir set to: /home/jsimpson/Documents/workspace/playpen/code
+[antlib:org.apache.tools.ant] Could not load definitions from resource org/apache/tools/ant/antlib.xml. It could not be found.
+Build sequence for target(s) `archive' is [check-archive, archive]
+Complete build sequence is [check-archive, archive, clean, ]
+
+check-archive:
+     [echo] Checking zip file time stamp
+ [uptodate] iggy.xml omitted as /home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip is up to date.
+ [uptodate] dave.xml omitted as /home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip is up to date.
+ [uptodate] No sources found.
+ [uptodate] File "/home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip" is up-to-date.
+
+archive:
+Skipped because property '-archive.is.unchanged' set.
+
+BUILD SUCCESSFUL
+Total time: 1 second
+</pre>
+</p>
+<p>There you have it.  It didn't bother creating the zip file because the sources hadn't changed.  That's useful.  But what about the duplication?  Surely it's annoying to have to define the sources and the target twice?  Yep.  That would be.  But take a closer look at the example above:  the target of the zip task is a property.  Look out for the useful little fileset reference that gets reused, too.</p>
+
+</body>
+</html>

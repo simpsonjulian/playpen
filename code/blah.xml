@@ -1,0 +1,9 @@
+<project>
+	<target name="clean">
+		<delete>
+			<fileset dir="${build.dir}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+	</target>
+</project>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cruisecontrol>
+	<project name="sample">
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="." />
+		</bootstrappers>
+		<modificationset quietperiod="60">
+			<svn RepositoryLocation="http://localhost"  />
+		</modificationset>
+		<schedule interval="60">
+			<exec command="/bin/true"/>
+		</schedule>
+		<log dir="build/logs"/>
+	</project>
+</cruisecontrol>
