@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>studio_3.html</title>
+<link rel="stylesheet" type="text/css" href="xml.css" />
+<style type="text/css">
+/
+</style>
+</head>
+<body>
+<p >Configuring CruiseControl the CruiseControl way</p>
+
+<p >You just started using CruiseControl.  You use a Version Control System to manage your code. You installed CruiseControl on a spare computer in the office; now it is giving you immediate feedback on the changes that occur in that codebase. Life is good. Then the disk on that spare computer fails, and your build server resumes its previous role as a doorstop.</p>
+
+
+<p >&quot;No problem&quot;. you think: &quot;All the code changes are in the VCS. We can regenerate any of the artifacts that we need to. In fact, all we need is the config file ... &quot;. Yes. That config file.  The config file on the hard disk that doesn't work anymore. This post will outline how to manage your configuration for CruiseControl without fear of losing it. Like many tools, CruiseControl becomes useless without configuration.
+</p>
+
+<p>In previous ThoughtWorks projects, we always needed to allow someone to have access to the build server to make configuration changes for CruiseControl.  Once projects grow past a few developers, it becomes hard to have everyone be familiar with the installation.  Typically we end up with one person (sometimes your humble narrator) becoming the dedicated CruiseControl administrator for the project.  This change creates a bottleneck in the team because all the changes to CruiseControl then become funnelled through that one person.</p>
+
+<p>The first step in mending this situation is getting CruiseControl to apply its own configuration.  Let's get started.  In addition to the projects that build and test your code, you will need a new project to apply the configuration to the server. We have been doing this to put the configuration file in the right place, using CruiseControl's &lt;bootstrapper&gt; plug-in to update the configuration files when they change:</p>
+
+<%= to_html("code/cruisecontrol.xml") %>
+
+<p > This will robotically update the configuration until the end of time.  It's simple but surprisingly effective.  There's no longer a dependency on the person who can make changes to CruiseControl. Suddenly they don't need to make the trivial changes on behalf of the rest of the team because anybody can safely change the configuration.  If someone does check in a broken configuration, it's all under version control.  Once you revert the change you can find the person who changed it and try and understand what they wanted to do.</p>
+
+<p>This is a big step forward.  But if you check in a broken configuration it will still be applied to CruiseControl. Fortunately CruiseControl has the good sense not to apply broken configuration; but you're missing a vital piece of feedback, and for that you need to write a simple validator like this one:</p>
+
+<%= to_html("src/org/juliansimpson/ConfigValidator.java")  %>
+
+<p >The validator uses internal classes of CruiseControl itself to validate the configuration.  Ideally we would have an external interface to do this - perhaps a command line option or an "official" Ant task.  I've asked the CruiseControl Enterprise team to look at this for future releases.   This approach does mean that you need to set the classpath so that the validator can find your CruiseControl install, but this way you find out with certainty that the configuration is valid <emph>for your version of CruiseControl</emph>.  I like to run these as an Ant task. It's very simple and easy for everyone to see what it does. Here's how I included it in a simple Ant build:</p>
+
+<%= to_html("build.xml")  %>
+
+
+<p>It all works together like this:  The CruiseControl BootStrapper fetches us the latest CruiseControl configuration, but in isolation from CruiseControl install - you still don't know if it is a valid configuration  file yet.  The "validated-config" target calls the ConfigValidator Ant task. This invokes enough of CruiseControl to make sure that the configuration is legal, and that some of the directories referred to in the configuration exist.  If that passes, the "publish" target copies the configuration to the CruiseControl server itself.  Finally the same target forces a reload of the CruiseControl configuration using a simple HTTP request to the JMX interface.  This ensures that the configuration is reloaded immediately, so that the team knows the configuration is valid.  Thanks to my colleague Tim Brown for this great idea.</p>
+
+<p>Summary: I have to admit being careless sometimes with XML configuration files.  This approach works particularly well for me because I have the safety net of the validation.  I do a similar thing with my email and web server installation as well, which I hope to write about soon.  The validator code and build files are available on my website at <a href="http://www.juliansimpson.org/">http://www.juliansimpson.org/</a>.</p>
+
+<p>&copy;Julian Simpson 2007. All rights reserved.</p>
+</body>
+</html>

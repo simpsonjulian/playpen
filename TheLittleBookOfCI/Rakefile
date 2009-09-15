@@ -1,0 +1,20 @@
+require 'rake/clean'
+build_dir = "build"
+CLEAN.include(build_dir)
+
+task :cruise => [:clean, :pdf]
+ 
+task :default => :cruise
+
+task :pdf do 
+  mkdir(build_dir)
+  #cp("logo.jpg",build_dir)
+  #cp("license.png",build_dir)
+  #cp("1017600536_3a7c3e4a34_m.jpg",build_dir)
+  #xslt_opts='--param doc.collab.show 0'
+  #command="dblatex --debug -p simple-stylesheet.xsl -V book.xml"
+  command="cd #{build_dir} && pdflatex book.tex"
+  puts "DEBUG: #{command} :GUBED"
+  cp('book.tex',build_dir)
+  raise "build failed" unless system(command)
+end

@@ -1,0 +1,117 @@
+<html>
+<head>
+    <title>Agile Systems Admin</title>
+</head>
+<body>
+
+<h1>Introduction</h1>
+
+<p>Can we take key agile practices like Unit Testing, Continuous Integration and apply them to the field of Systems Administration? Ever since joining the Agile consultancy ThoughtWorks, I had wondered about 'stealing' some of these practices.</p>
+
+<h1>Agile practices</h1>
+
+<h2>The practices explained</h2>
+short history
+<ul>
+  <li>CI</li>
+  <li>Unit Testing</li>
+  <li>Collective Code Ownership</li>
+  <li>Pairing</li>
+  <li>Retrospectives</li>
+  <li>Iterations</li>
+  <li>Refactoring</li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+fill in the rest 
+split process vs technical?
+
+<h2>But will they work for Systems Administrators?</h2>
+
+<h1>Step One: Continuous Integration</h1>
+<h1>Step Two: Testing</h1>
+<h1>Summary</h1>
+<h1>Next Steps</h1>
+
+<p>Given that developers of business software have a narrow toolset, and systems administrators can have a very broad set of tools, it didn't seem that trying to implement similar practices would be easy.  I wanted to identify an agile practice that could gain some traction.  That turned out to be Continuous Integration.  Under CI, business code is checked out frequently from the code repository, compiled and unit tested.  Many sites maintain configuration under source control. While we systems administrators have no common unit testing framework, we can do some things to ensure that our config files look adequate.</p>
+
+<p>I started by keeping all of my configuration files under version control.  That was easy enough to do, but there was no process to track the difference between those files and the deployed versions, or  deploy them to the machines where they would be used.  Without this, they would quickly become out of date.</p>
+
+<p>Puppet filled this gap nicely.  Puppet can be compared to cfengine, as a tool and domain specific language to describe the desired state of your systems and then attempt to change the running state of your system to match.  I attempted to bootstrap puppet onto my test system so that it could manage itself.  The configuration files for puppet were maintained in version control alongside the configuration files for apache, bind, imapd and postfix.</p>
+
+<p>Puppet is written in the dynamic language Ruby.  Ruby has an Xunit style test framework (among others) that I used to wrap tests in.  I wrote some basic tests to use the applications themselves to validate the configuration files.  So now I had: </p>
+
+<ul>
+<li>Configuration files under version control </li>
+<li>A way to validate at least some of the configuration files, and </li>
+<li>A way to deploy them to many systems.</li>
+</ul>
+
+<p>The above is roughly what I wanted to start with - a way to make sure that no administration change happened on a system that wasn't triggered by systems administrators redefining states in source control, that configuration files were validated before being applied, and that there was a concept of version or label for a particular configuration.  In practice things are more complex.</p>
+
+<h1>Validating Configuration</h1>
+
+<pre>class SudoersFile &lt; Component
+  def initialize(sudoers_file)
+    sudo='/usr/sbin/visudo'
+    @command=&quot;#{sudo} -c -f #{sudoers_file}&quot;
+	@depends=&quot;sudo&quot; 
+  end
+end
+</pre>
+
+<p>The configuration files are mainly parsed by the programs that use them; for example apache can be made to validate it's own configuration files with a little work.  In a small hetrogeneous environment that may be acceptable.  If your site maintains many versions of one application, and that application can easily parse it's config files and exit with a return code or exception so that the test code can  detect the error, that might be ok.  </p>
+
+<p>We don't want to end up writing parsers for many application's configuration files.  I may need to write a general library that knows how to externaly validate files using the applications themselves.  For applications that don't have a command line syntax for validating configuration, or the possibility of wrapper code that can access the internals, we may be forced to write code that in some way tries to validate the file.</p>
+
+<h1>Testing Behaviour</h1>
+
+<p>Besides, validating configuration files is in some ways a distraction from what we really want: we want predictable behaviour from infrastructure, with a short lead time to make the changes that the business needs. 
+Ideally instead of specifying that my postfix configuration is correct, I want to specify behaviour; for example my main MX will relay mail for any of the domains that I host, and none that I don't.  Unless I am sending mail from one of the netblocks that I trust.  </p>
+
+<p>I might be able to reuse plugins from a monitoring system like nagios to performa my functional behavior test, but I don't want a monitoring tool to tell me that my live servers aren't relaying mail for one of my domains; I want to verify a given version of my configuration and tag it in my version control system so that I can understand the impact of changes made in VCS.  Sophisticated monitoring tools are freely available for telling you what the state of your services and servers are.  Disk failures will stll happen, we just have tools (puppet, cfengine, LCFG) to help us regain the desired state.  I also want to verify behaviour before I deploy a version of a configuration.</p>
+
+<p>To my mind there is value in using one tool to specify the expected behaviour, and then another to implement that change.  It keeps the latter tool honest.</p>
+
+<p>Very few infrastructure tools allow you to specify things at this abstracted level (e.g. I want a new website, not a vhost file, a DNS zone and a firewall entry).  </p>
+
+<p>With that end goal in mind I have decided to first gain confidence from the validation of config files or other artifacts that I keep under source control.  </p>
+
+<p>In a software development context, we would also have the benefit of stubbing out components that aren't relevant or mocking those that can support our tests.  In an infrastructure context we don't have the convenience, but we can functionally test components using virtual servers.  I plan to do this using Amazon EC3 servers.</p>
+	
+<h1>rake: ruby glue</h1>
+
+<p>The rake build tool deserves a special mention.  Rake allowed me to run tests, fragments of shell script, ruby fragments and commands to achieve this.  As a rapid prototyping tool for gluing together tools it has been instrumental.  For trying out new ideas you can quickly write ruby methods in the Rakefile, execute ruby tests on more formal code, and instantiate objects from yout code inside the Rakefile.</p>
+
+<h1>Overview of the Infrastructure CI process</h1>
+
+<p>Cruisecontrol is constantly polling the Subversion repository for changes.  When it detects a change, it updates the working copy and then executes Rake.  Rake then orchestrates the test and deployment process:</p>
+
+<ul>
+<li>changes are picked up in Subversion</li>
+<li>cruisecontrol fetches the changes and invokes Rake, which</li>
+<li>replaces tokens in any config files  and makes appropriate paths to support testing</li>
+<li>executes the tests, validating configuration files and the puppet configuration</li>
+<li>the files are then staged for a deploy to the filesystem [ on the test puppet server], populating tokens with real values this time</li>
+<li>the config files are deployed [ to the test puppetmaster server ] </li>
+<li>an svn checkout in '/etc/puppet' on the puppetmaster server is updated</li>
+<li>and puppet is run in a standalone mode [ in the future: on a test VM ] to validate the config.  For example the puppet syntax may be valid, but it may declare a dependency on an incorrect path.</li>
+<li>if the test puppet run passes, the build is successful [and the build is tagged in Subversion]</li>
+<li>[ then the configuration files are shipped to the production puppet server] </li>
+<li>[ and the puppet config is updated]</li>
+<li>[ to the tag of the initial checkout ]</li>
+</ul>
+
+<p>[ or perhaps all the files should be shipped out at once, and puppetmaster run from the same dir? ]
+Once the puppet config is live, the client machines will pick up the changes in due time.  The Puppet configuration process will restart those services that don't dynamically reload their configuration.</p>
+
+<p>References
+[MANIFEST] Agile Manifesto, http://agilemanifesto.com
+[XUNIT] 
+[PUPPET]
+[CI] </p>
+</div>
+</body>
+</html>

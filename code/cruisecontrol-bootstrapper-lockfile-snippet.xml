@@ -1,0 +1,32 @@
+<cruisecontrol>
+	<system>
+		<configuration>
+			<threads count="2" />
+		</configuration>
+	</system>
+
+    <project name="test-1" >
+		<listeners>
+			<lockfilelistener lockFile="/tmp/lock" projectName="${project.name}"/>
+		</listeners>
+    	<bootstrappers>
+        	<lockfilebootstrapper lockFile="/tmp/lock"  projectName="${project.name}" />
+    	</bootstrappers>
+		<schedule interval="30">
+			<exec command="/bin/true" />
+		</schedule>
+	</project>
+
+    <project name="test-2" >
+		<listeners>
+			<lockfilelistener lockFile="/tmp/lock" projectName="${project.name}"/>
+		</listeners>
+    	<bootstrappers>
+        	<lockfilebootstrapper lockFile="/tmp/lock"  projectName="${project.name}" />
+    	</bootstrappers>
+		<schedule interval="30">
+			<exec command="/bin/true" />
+		</schedule>
+	</project>
+
+</cruisecontrol>

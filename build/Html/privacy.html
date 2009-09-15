@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>When you name a target, leave it some privacy<title>
+<style lang="text/css">
+.normal {}
+.namespace { color: #B66; font-weight: bold; }
+.tag { color: #F88; }
+.comment { color: #005; font-style: italic; }
+.punct { color: #447; font-weight: bold; }
+.string { color: #944; }
+.number { color: #F99; }
+.attribute { color: #BB7; }
+
+</style>
+</head>
+<body>
+
+<p>THere's a question that I wanted to ask you, noble reader. Consider the following code snippet:</p>
+
+<pre><span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">my_great_web_app</span><span class="punct">&quot;&gt;</span>
+
+<span class="comment">&lt;!-- snip --&gt;</span>
+
+  <span class="punct">&lt;</span><span class="tag">target</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">backend-zip-static</span><span class="punct">&quot;&gt;</span>
+    <span class="punct">&lt;</span><span class="tag">zip</span> <span class="attribute">zipfile</span><span class="punct">=&quot;</span><span class="string">${build}/backend-static.zip</span><span class="punct">&quot;&gt;</span>
+	    <span class="punct">&lt;</span><span class="tag">fileset</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${backend.static.dir}</span><span class="punct">&quot;/&gt;</span>
+    <span class="punct">&lt;/</span><span class="tag">zip</span><span class="punct">&gt;</span>
+  <span class="punct">&lt;/</span><span class="tag">target</span><span class="punct">&gt;</span>
+
+<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+</pre>
+
+<p>There's an assertion that in Object Oriented programming that every class should have a secret.  If your classes don't encapsulate a process and spare the rest of a system the details, then you haven't factored your object model correctly.</p>
+
+<p>So if every class in OO code should have a secret, should targets in your build have secrets?  Does that mean that you shouldn't expose (in the name of the target) how a target does what it does?  In this example, how about <strong>backend-static-archive</strong> as a target name instead of <strong>backend-zip-static</strong> ? </p>
+
+<p> The example above came from a real project.  We changed the way we deployed the app, and had to painstakingly rename the target and its references across a hierarchy of build files.  Yes, we probably shouldn't have had such a huge hierarchy of build files.  But we did.</p>
+
+<p>Should you ever expose the process that you apply inside a target? Or should the name of the target just describe the output? What do you think? Comments <i>very</i> welcome below.</p>
+
+</body>
+</html>

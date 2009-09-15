@@ -1,0 +1,27 @@
+fuckeWhy shouldn't I use my IDE to build the code?
+/
+Developer: Hey, do you know why my build broke?
+
+Build Manager: I don't know why the build broke yet.  What happened when you ran the Ant build?
+
+Developer: Hang on a minute.  I'm a developer.  I use my IDE for everything.  It compiles my code and it runs my unit tests.  It even helps me check files into the Version Control System.  Why should I run your ant build before I check in?
+
+Build Manager:  Because when we build it for production, we build the code with Ant.  It's totally hands-off and we can automate the whole build and deploy to the test and production environments with it.  And there's no platform dependencies.
+
+Developer: Like I said.  I write the code, you deploy it.  You can use any tool that you like.
+
+Build Manager (casually reading the build output): Right, so what stops developers from using middle-tier code in the frontend and breaking the dependency rules?
+
+Developer: Diligence.
+
+Build Manager: Well, here's a tin of diligence.  You just did that.
+
+Developer: Get away.  Ah, you're right.
+
+Build Manager: In addition to allowing us to break the build if the dependencies aren't correct, you get to find out if your code is deployable.  Which is a good thing.  And the build deals with non-code dependencies, like the database.
+
+Developer: But I'm just here to write the code!
+
+BM: Sure.  Which would be fine if we ran the code on your desktop computer with your IDE open.  But in production things are different.  The build is the first step towards getting it there.  We build on a different operating system and run tests on it to make sure there's no platform issues from the developer machines.  We package it up in the right format for deploying to production systems.  And you runnnig the build before you check in means that we can get the code to production that little bit faster.
+
+Developer.  OK.  You win.  I'll run the build.

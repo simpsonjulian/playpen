@@ -1,0 +1,9 @@
+<project name="web" default="zipfile">
+  <property name="build.dir" value="build" />
+
+ <target name="zipfile">
+   <zip file="${build.dir}/static.zip">
+     <zipfileset prefix="random_token" dir="code"/>
+   </zip>
+ </target>
+</project>

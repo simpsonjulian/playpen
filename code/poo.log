@@ -1,0 +1,20 @@
+Detected Java version: 1.6 in: /usr/lib/jvm/java-6-sun-1.6.0.06/jre
+Detected OS: Linux
+parsing buildfile /home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml with URI = file:/home/jsimpson/Documents/workspace/playpen/code/up2date.build.xml
+Project base dir set to: /home/jsimpson/Documents/workspace/playpen/code
+[antlib:org.apache.tools.ant] Could not load definitions from resource org/apache/tools/ant/antlib.xml. It could not be found.
+Build sequence for target(s) `archive' is [check-archive, archive]
+Complete build sequence is [check-archive, archive, clean, ]
+
+check-archive:
+     [echo] Checking zip file time stamp
+ [uptodate] larry.xml omitted as /home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip is up to date.
+ [uptodate] moe.xml omitted as /home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip is up to date.
+ [uptodate] No sources found.
+ [uptodate] File "/home/jsimpson/Documents/workspace/playpen/code/build/stooges.zip" is up-to-date.
+
+archive:
+Skipped because property '-archive.is.unchanged' set.
+
+BUILD SUCCESSFUL
+Total time: 1 second

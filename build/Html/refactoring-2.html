@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>Refactoring Ant for fun and profit</title>
+	</head>
+	<body>
+
+	<p>Last time we you read about the "extract target" refactoring.  Today, I'm going to show you one that I love to delete:  The <strong>boolean property</strong>. Have a look at this: 
+<pre name="code" class="xml">&lt;project default="unit_tests"&gt;
+
+	&lt;property name="junit.enabled" value="true" /&gt;
+
+	&lt;target name="-check_junit_enabled"&gt;
+		&lt;condition property="junit.really.enabled"&gt;
+      &lt;and&gt;
+        &lt;equals arg1="${junit.enabled}" arg2="true" /&gt;
+      &lt;/and&gt;
+    &lt;/condition&gt;
+	&lt;/target&gt;
+
+	&lt;target name="unit_tests" if="junit.really.enabled" depends="-check_junit_enabled"&gt;
+		&lt;mkdir dir="build/test-results"/&gt;
+		&lt;junit&gt;
+			&lt;test name="FooBarImplTest" todir="build/test-results"/&gt;
+			&lt;classpath&gt;
+				&lt;fileset dir="build"/&gt;
+				&lt;fileset dir="lib"/&gt;
+			&lt;/classpath&gt;
+			&lt;formatter type="xml"/&gt;
+		&lt;/junit&gt;
+	&lt;/target&gt;
+&lt;/project&gt;
+</pre>
+	</p>
+	
+	<p>
+		blah blah blah
+		<pre name="code" class="xml">&lt;project default="unit_tests"&gt;
+
+	&lt;property name="junit.enabled" value="any value will do here" /&gt;
+
+	&lt;target name="unit_tests" if="junit.enabled"&gt; 
+		&lt;mkdir dir="build/test-results"/&gt;
+		&lt;junit&gt;
+			&lt;test name="FooBarImplTest" todir="build/test-results"/&gt;
+			&lt;classpath&gt;
+				&lt;fileset dir="build"/&gt;
+				&lt;fileset dir="lib"/&gt;
+			&lt;/classpath&gt;
+			&lt;formatter type="xml"/&gt;
+		&lt;/junit&gt;
+	&lt;/target&gt;
+&lt;/project&gt;
+</pre>
+	</p>
+	
+	</body>
+
+</html>

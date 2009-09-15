@@ -1,0 +1,14 @@
+At the recent CITCON conference I posted a session titled ".NET: Who Cares?".  It wasn't trying to ascertain who cares about .NET; plenty of people do.  I wanted to know who cares about applying engineering rigour to that platform:
+
+- using continuous integration to build your deliverable artifacts
+- making sure that you can deploy each artifact to several test environments
+- not depending on your IDE to build software
+
+One guy turned up.  He did make some good comments - thank you if you're reading!  I can't help feeling that I haven't gotten to the bottom of the issue.  .NET has enormous potential to deliver business value quickly:
+
+- a very good language and standard library
+- straightforward deployment
+- blah blah blah
+
+So is it that the practitioners of the art are happy to deploy from their IDE?  Is configuring everything with point and click methods okay?  What do you think?  Am I wrong? Tell me ... 
+- 

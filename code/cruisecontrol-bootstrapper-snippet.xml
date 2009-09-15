@@ -1,0 +1,4 @@
+   
+        <bootstrappers>
+            <svnbootstrapper localWorkingCopy="${working.dir}/${project.name}"/>
+        </bootstrappers>

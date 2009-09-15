@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN"
+    "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns:svg='http://www.w3.org/2000/svg' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head><meta content='application/xhtml+xml;charset=utf-8' http-equiv='Content-type' /><title>Build Rosetta Stone</title><link href='style.css' rel='stylesheet' type='text/css' />
+</head>
+<body>
+<h1 id='build_rosetta_stone'>Build Rosetta Stone</h1>
+
+<h2 id='introduction'>Introduction</h2>
+
+<p>The original Rosetta stone was discovered in Egypt in 1799, and controversially brought back to Europe in 1802. The stone led to a breakthrough in the decipherment of Hieroglyphic writing. It now resides in the British Museum in London and is well worth a visit. <a href='http://en.wikipedia.org/wiki/Rosetta_Stone'>Wikipedia link</a></p>
+
+<p>What&#8217;s on this stone? Major tasks and commands from several build languages.</p>
+
+<p>Most build tools deal with a very similar problem in a familiar way. So if you know one build tool, you probably don&#8217;t want gory details on how to write a buld file - you just want to know about that task. You know, that task? I know what it is in Ant &#8230;</p>
+
+<p>This document is available in <a href='http://www.build-doctor.com/rosetta-stone'>HTML</a> and <a href='http://www.build-doctor.com/rosetta-stone/stone.pdf'>PDF</a>.</p>
+
+<h2 id='file_tasks'>File Tasks</h2>
+
+<p>Does it mangle a file without doing anything too clever? Then it&#8217;s here.</p>
+<table><thead><tr><th>Ant</th><th>Nant</th><th>MsBuild</th><th>Rake</th><th>Desc</th></tr></thead><tbody><tr><td style='text-align: left;'>Basename</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Identify the last element of a path</td>
+</tr><tr><td style='text-align: left;'>BUnzip2</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Extract a Bzip2 archive</td>
+</tr><tr><td style='text-align: left;'>BZip2</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Make a Bzip2 archive</td>
+</tr><tr><td style='text-align: left;'>Checksum</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Calculate the message digest checksum of a file</td>
+</tr><tr><td style='text-align: left;'>Chmod</td><td style='text-align: left;'>attrib</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Change permission bits on a file</td>
+</tr><tr><td style='text-align: left;'>Concat</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Concatentate several files together</td>
+</tr><tr><td style='text-align: left;'>Copy</td><td style='text-align: left;'>copy</td><td style='text-align: left;'>Copy</td><td style='text-align: left;'>cp</td><td style='text-align: left;'>Copy files or directories</td>
+</tr><tr><td style='text-align: left;'>Delete</td><td style='text-align: left;'>delete</td><td style='text-align: left;'>Delete,RemoveDir</td><td style='text-align: left;'>rm, rm<em>r</em></td><td style='text-align: left;'>Remove files or directories</td>
+</tr><tr><td style='text-align: left;'>Dirname</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Identify the directories that make up a path</td>
+</tr><tr><td style='text-align: left;'>FixCRLF</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Change the line ending of a file</td>
+</tr><tr><td style='text-align: left;'>Filter</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Replace tokens in files</td>
+</tr><tr><td style='text-align: left;'>GUnzip</td><td style='text-align: left;'>gunzip</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Uncompress a GZip archive</td>
+</tr><tr><td style='text-align: left;'>GZip</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Make a GZip archive [surely nant has this?\</td>
+</tr><tr><td style='text-align: left;'>LoadFile</td><td style='text-align: left;'>loadfile</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>read a file into a property</td>
+</tr><tr><td style='text-align: left;'>Mkdir</td><td style='text-align: left;'>.</td><td style='text-align: left;'>MakeDir</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Make a new directory</td>
+</tr><tr><td style='text-align: left;'>Move</td><td style='text-align: left;'>move</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Move files and directories</td>
+</tr><tr><td style='text-align: left;'>Replace</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Replace a token in a file or group of files</td>
+</tr><tr><td style='text-align: left;'>Tar</td><td style='text-align: left;'>tar</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Make or extract a tar archive</td>
+</tr><tr><td style='text-align: left;'>Tempfile</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Make a unique temporary directory</td>
+</tr><tr><td style='text-align: left;'>Touch</td><td style='text-align: left;'>touch</td><td style='text-align: left;'>Touch</td><td style='text-align: left;'>touch</td><td style='text-align: left;'>Update timestamp on a file</td>
+</tr><tr><td style='text-align: left;'>Unzip</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Extract a Zip archive file</td>
+</tr><tr><td style='text-align: left;'>Zip</td><td style='text-align: left;'>zip</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Make a Zip archive file</td>
+</tr></tbody></table>
+<h2 id='compilation_linking_etc'>Compilation, Linking etc.</h2>
+
+<p>There&#8217;s not that much scope for comparison here. All platform specific. Sorry.</p>
+<table><thead><tr><th>Ant</th><th>Nant</th><th>MsBuild</th><th>Desc</th></tr></thead><tbody><tr><td style='text-align: left;'>.</td><td style='text-align: left;'>al</td><td style='text-align: left;'>AL</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Assembly Linker</td><td style='text-align: left;'>.</td><td style='text-align: left;'>cl</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Compile C/C++ code</td><td style='text-align: left;'>.</td><td style='text-align: left;'>csc</td><td style='text-align: left;'>Csc</td>
+</tr><tr><td style='text-align: left;'>Compile C# code</td><td style='text-align: left;'>javadoc</td><td style='text-align: left;'>ndoc</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Generate Documentation</td><td style='text-align: left;'>Java</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Run Java Code</td><td style='text-align: left;'>Javac</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Compile Java Code</td><td style='text-align: left;'>.</td><td style='text-align: left;'>vbc</td><td style='text-align: left;'>Vbc</td>
+</tr><tr><td style='text-align: left;'>Compile Visual Basic Code</td><td style='text-align: left;'>.</td><td style='text-align: left;'>jsc</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Compile Jscript.NET code</td><td style='text-align: left;'>.</td><td style='text-align: left;'>vjc</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Compile J# code</td><td style='text-align: left;'>junit <sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup></td><td style='text-align: left;'>nunit2</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>.</td><td style='text-align: left;'>Rmic</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>run the RMIC compiler for a single class</td>
+</tr></tbody></table>
+<h2 id='packaging_tasks'>Packaging Tasks</h2>
+
+<p>However loose your definition of package is ..</p>
+<table><thead><tr><th>Ant</th><th>Nant</th><th>MsBuild</th><th>Rake</th></tr></thead><tbody><tr><td style='text-align: left;'>.</td><td style='text-align: left;'>ASMInfo</td><td style='text-align: left;'>AssemblyInfo</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Ear</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Jar</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Manifest</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>ManifestClassPath</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Unjar</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Untar</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Unwar</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>War</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr></tbody></table>
+<h2 id='version_control_system_tasks'>Version Control System Tasks</h2>
+
+<p>ideally, your build should not need to know. but just in case&#8230;</p>
+<table><thead><tr><th>Ant</th><th>Nant</th><th>MsBuild</th><th>Rake</th></tr></thead><tbody><tr><td style='text-align: left;'>Cvs</td><td style='text-align: left;'>cvs</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>CvsChangeLog</td><td style='text-align: left;'>cvs-changelog</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>CvsVersion</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>CVSPass</td><td style='text-align: left;'>cvs-pass</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>CvsTagDiff</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr></tbody></table>
+<h2 id='other_tasks'>Other Tasks</h2>
+<table><thead><tr><th>Ant</th><th>Nant</th><th>MsBuild</th><th>Rake</th></tr></thead><tbody><tr><td style='text-align: left;'>Ant</td><td style='text-align: left;'>Nant</td><td style='text-align: left;'>MsBuild</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>AntCall</td><td style='text-align: left;'>NantCall</td><td style='text-align: left;'>CallTarget</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>AntStructure</td><td style='text-align: left;'>NantSchema</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Apply</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Available</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>BuildNumber</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Condition</td><td style='text-align: left;'>if</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Defaultexcludes</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Description</td><td style='text-align: left;'>Description</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Dependset</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Diagnostics</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Echo</td><td style='text-align: left;'>echo</td><td style='text-align: left;'>Message</td><td style='text-align: left;'>puts</td>
+</tr><tr><td style='text-align: left;'>EchoXML</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Exec</td><td style='text-align: left;'>Exec</td><td style='text-align: left;'>Exec</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Fail</td><td style='text-align: left;'>fail</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>.</td><td style='text-align: left;'>Foreach</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>GenKey</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Get</td><td style='text-align: left;'>Get</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Import</td><td style='text-align: left;'>include</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Input</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Length</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>LoadProperties</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>LoadResource</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>MakeURL</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Mail</td><td style='text-align: left;'>mail</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Macrodef</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Nice</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Parallel</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Patch</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>PathConvert</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>PreSetDef</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Property</td><td style='text-align: left;'>property</td><td style='text-align: left;'>.</td><td style='text-align: left;'>property</td>
+</tr><tr><td style='text-align: left;'>Record</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>ResourceCount</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>script,scriptdef<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup></td><td style='text-align: left;'>script</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Sequential</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>.</td><td style='text-align: left;'>servicecontroller</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>SignJar</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Sleep</td><td style='text-align: left;'>sleep.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Sql</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Subant</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Sync</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Taskdef</td><td style='text-align: left;'>loadtasks</td><td style='text-align: left;'>.</td><td style='text-align: left;'>require</td>
+</tr><tr><td style='text-align: left;'>TStamp</td><td style='text-align: left;'>tstamp</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Typedef</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Uptodate</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>Waitfor</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>Warning</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>WhichResource</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>XmlProperty</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr><tr><td style='text-align: left;'>XSLT/Style</td><td style='text-align: left;'>style</td><td style='text-align: left;'>.</td><td style='text-align: left;'>.</td>
+</tr></tbody></table>
+<h2 id='notes'>Notes</h2>
+
+<p>Deprecated tasks are not included. Tasks outside the default distribution are marked as such.</p>
+
+<p>What versions?</p>
+
+<ul>
+<li>Ant 1.7</li>
+
+<li>Nant ??</li>
+
+<li>MSBuild ??</li>
+
+<li>Rake ??</li>
+</ul>
+
+<h2 id='author'>Author</h2>
+
+<p>Julian Simpson</p>
+
+<p><a href='http://www.build-doctor.com'>http://www.build-doctor.com</a></p>
+
+<p><a href='mailto:medic@build-doctor.com'>&#109;&#101;&#100;&#105;&#099;&#064;&#098;&#117;&#105;&#108;&#100;&#045;&#100;&#111;&#099;&#116;&#111;&#114;&#046;&#099;&#111;&#109;</a></p>
+
+<p><img src='logo.jpg' alt='BD Logo' /></p>
+
+<p><img src='license.png' alt='CC Logo' /></p>
+
+<p>This work is licenced under the Creative Commons Attribution-Non-Commercial-Share Alike 2.0 UK: England &amp; Wales License. To view a copy of this licence, visit http://creativecommons.org/licenses/by-nc-sa/2.0/uk/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.</p>
+<div class='footnotes'><hr /><ol><li id='fn:1'>
+<p>This task has additional library dependencies</p>
+<a href='#fnref:1' rev='footnote'>&#8617;</a></li><li id='fn:2'>
+<p>This task has additional library dependencies</p>
+<a href='#fnref:2' rev='footnote'>&#8617;</a></li></ol></div></body></html>

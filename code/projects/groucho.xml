@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<cruisecontrol>
+	<project name="groucho" buildafterfailed="false">
+		<listeners>
+			<currentbuildstatuslistener file="${status.file}"/>
+		</listeners>
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="${project.dir}"/>
+		</bootstrappers>
+		<log dir="${log.dir}">
+			<merge dir="${project.dir}/build/test/log"/>
+		</log>
+		<schedule interval="60">
+            <ant antWorkingDir="${project.dir}"
+             antscript="${ant.script}"
+             uselogger="true"/>
+        </schedule>
+	</project>	
+</cruisecontrol>

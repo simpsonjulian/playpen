@@ -1,0 +1,24 @@
+There has been some concern on my present project about build times. My colleague Ben started graphing the builds on a sheet of paper and posting it in the kitchen so everybody in the team could see it. When the sheet fell of the wall and the cleaners threw it away, I knew it was time to do something.
+
+Cruise Publisher
+How do you get the build time in the first place? Short answer: Write some code to extract it from the log, and log it in a database.
+
+Longer answer: I wrote a CruiseControl publisher in Ruby to extract the build duration from the CruiseControl log. The log is an XML file that is made available to the publisher.
+Rails
+
+
+Gruff
+
+require 'chart'
+require 'gruff'
+
+data = { "count" => [ 3, 5, 2 ] }
+g = Gruff::Line.new 640
+g.title = "Usages of the word 'foo'"
+g.labels = { 0 => 'Monday', 1 => 'Tuesday', 2 => 'Wednesday'}
+g.theme_rails_keynote
+data.each_pair {|k, v| g.data(k, v)}
+blob = g.to_blob
+
+out = File.new("blob.png","w+")
+out << blob

@@ -1,0 +1,55 @@
+It's 18:37.  I'm on the train.
+
+I just spent my afternoon trying to do a release build at short notice.
+
+Fact: The present system we have for doing build number management is inefficient and complex.  the natural place to keep the state of the build is in the CI tool.  You pass the number down to the project at the time you build it, and it just works.  Our present system requires the build to 
+
+- create a perforce client
+- check out 2 files from p4
+- read a state file,
+- increment the state,
+- write the state back,
+- commit the changes.
+- did any of the above fail?  catch an exception and delete the changelist that you made
+
+Fact: we also build our code in an unusual place.  We build in a different tree from the code; we disambiguate what codeline we are using by building in a subdirectory of that directory.  By far the simplest thing to do is build in a single tree under the directory where the code lives. That way:
+ - the path to built objects is always relative to the build script (assuming that you do the correct thing and put it in the root of the project tree).
+ - there is no complication in where to find things.
+
+Fact: it's highly unusual to delete the entire source tree and retrieve it again.  VCS tools will be able to ensure that the code is at the correct version.
+
+Tonight, we branched the codebase.  There was some complication caused by me leaving for an hour, and coming back to find that others had failed to check in the files on my pc.  They tried to recreate by hand.
+
+Then (as I warned 2 people) the new functionality to make an installer failed.  it failed because of subtle issues in our build.  It uses the build label to determine if it should do a full build or not.  So you can't expose the build label to some parts of the build.  We started on the path of building in the right place, but this was curtailed by issues with the CI config, unfortunately.
+
+As a matter of urgency we need to change some of the build process.  This could be so simple.
+
+Things for me.
+
+We need to standardize the build process.  Like an interface.
+
+So 
+- what is the tree surgeon layout?
+- what is the standard maven repository format?
+- does nmaven use it?
+- do I need to speak to IC about treading on toes?
+
+it's monday.
+
+An early start and a late finish.  Beazleyinsight ^H^H^H^ Express is chewing up a lot of my time.  I need to push through the changes or, I'm fucked.
+
+In particular, the tight coupling of build vs deploy.  That is causing a lot of pain.  And the loose coupling of db changes.  I'm amazed that we get anything done here.
+
+What is the simplest thing that I can do to kick things off?
+
+- finish rolling out the change to the deploy builds.
+- start rolling it out to the trunk builds.
+- investigate making build.dir relative to the project.
+- stub out deploy.build where applicable
+- start running regular validations.
+
+
+######
+again.  different australian, different project, same shit.
+
+

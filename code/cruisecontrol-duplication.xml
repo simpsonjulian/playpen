@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<cruisecontrol>
+	<project name="chico" buildafterfailed="false">
+		<listeners>
+			<currentbuildstatuslistener file="/var/tmp/cruise/logs/chico/status.txt"/>
+		</listeners>
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="/var/tmp/cruise/projects/chico/"/>
+		</bootstrappers>
+		<log dir="/var/tmp/cruise/logs">
+			<merge dir="/var/tmp/cruise/projects/chico/build/test/log"/>
+		</log>
+		<schedule interval="60">
+            <ant antWorkingDir="/var/tmp/cruise/projects/chico"
+             antscript="/var/tmp/cruise/ant/bin/ant"
+             uselogger="true"/>
+        </schedule>
+	</project>
+	
+	<project name="groucho" buildafterfailed="false">
+		<listeners>
+			<currentbuildstatuslistener file="/var/tmp/cruise/logs/groucho/status.txt"/>
+		</listeners>
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="/var/tmp/cruise/projects/groucho/"/>
+		</bootstrappers>
+		<log dir="/var/tmp/cruise/logs">
+			<merge dir="/var/tmp/cruise/projects/groucho/build/test/log"/>
+		</log>
+		<schedule interval="60">
+            <ant antWorkingDir="/var/tmp/cruise/projects/groucho"
+             antscript="/var/tmp/cruise/ant/bin/ant"
+             uselogger="true"/>
+        </schedule>
+	</project>
+</cruisecontrol>

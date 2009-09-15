@@ -1,0 +1,13 @@
+I'm sitting at gate D22 in Amsterdam's Shiphol Airport.  I got back to my hotel around 2am last night, I've had a pastry beautiful double latte from Coffee Connection for breakfast.  But things are good.  CITCON Europe 2008 was well worth my mild distress this morning. 
+
+CITCON is a free weekend conference for people who want to learn about building an testing software.  It's not directly about writing software.  There's a good number of developers who come to the conference.  They are the ones who care about getting their software deployed into production.
+
+Why do I rave about CITCON every year?  It's free.  (bought to you by the OIF)  It's an open space conference.  You choose the agenda, you participate, and if you don't like it, you can't blame the organisers.  CITCON is the regular European meeting place of many Continuous Integration users and vendors.  Which is good if that's your thing.
+
+The most notable session this year was the CI Cage Fight.  I suggested a session called ".NET: - who cares?".  The session title was intended to provoke the .NET developers who actually do care about building and testing to com be heard.  Three people showed up.  Two were my friends who are both systems administrators and one guy showed up and did care.  I'm going to explore this in a different post.
+
+I met one of the RSS subscribers of the Build Doctor.  Hello Hank!
+
+The most rewarding session for me was the CITCON Europe 2009 planning.   This process is done in the same open way as the rest of the conference.  A session was posted on the board for the talk, and those who showed up got commence planning.  I'm in charge of promotion for next year.  When we fix the date and place (the shortlist seems to be Paris, Frankfurt and Barcelona in no particular order) I'll be making announcements.
+
+

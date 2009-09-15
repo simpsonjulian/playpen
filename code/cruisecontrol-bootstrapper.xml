@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<cruisecontrol>
+
+    <project name="my_great_app">
+
+        <bootstrappers>
+            <svnbootstrapper localWorkingCopy="${working.dir}/${project.name}" file="build.xml">
+            <svnbootstrapper localWorkingCopy="${working.dir}/${project.name}" file="ccbuild.xml">
+        </bootstrappers>
+
+        <modificationset quietperiod="30">
+            <svn LocalWorkingCopy="${working.dir}/${project.name}"/>
+        </modificationset>
+
+        <schedule interval="60">
+            <ant antWorkingDir="${working.dir}/${project.name}" antscript="${working.dir}/tools/apache-ant-1.6.5/bin/ant" />
+        </schedule>
+
+    </project>
+</cruisecontrol>

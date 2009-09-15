@@ -1,0 +1,13 @@
+<project name="duplicatron">
+	
+	<fileset id="output_files" dir="${build.dir}">
+		<include name="duplicato-*.jar" />
+	</fileset>
+	
+	<target name="copy_stuff">
+		<copy todir="${special.shiny.dir}">
+			<fileset refid="output_files" />
+		</copy> 
+	</target>
+	
+</project>

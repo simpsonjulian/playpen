@@ -1,0 +1,40 @@
+<p>Welcome to the final Ant Best Practices post.  The last topic of the series is wrapper scripts.  Most projects end up having one or more of these.  The very first Java project that I did had about a dozen of them. They generally look like this:
+
+<%= to_html('code/go.sh') %>
+</p><p>
+There's a compelling reason for doing this: everyone appreciates being able to type three keystrokes to kick off the build.  So why are Eric and I so against the idea?  Because it invariably grows into a complex piece of code in it's own right. 
+</p><p>
+Ant already comes with a decent sized wrapper script to locate Java and invoke the ant classes with the right libraries:
+<blockquote><pre>
+jsimpson@knox:~$ wc -l `which ant`
+317 /usr/bin/ant
+</pre>
+</blockquote>
+
+The version that ships with Debian is 317 lines long.  I think that's enough wrapper.
+</p>
+
+<p>It's okay to have a one-liner shell script to call your build.  Making it do more than that is the beginning of a very slippery slope.  In the project mentioned earlier, the wrapper scripts (there were about a dozen different files, from memory) would locate a WebLogic installation, set the $CLASSPATH environment variable so that the application build could locate WebLogic.  Eventually the wrapper would build the application and then exit, passing the calling process a return code of '0', regardless of success.<p>
+
+<p>Once we upgraded WebLogic things got more difficult.  Now there were 2 wrapper scripts that found different installs of WebLogic.  And there had to be wrapper scripts for those, of course.  Then there was the deployment scripts that:
+<ul>
+  <li>Look up each developer's assigned TCP port from a file</li>
+  <li>Start Weblogic and pass it the right port number</li>
+  <li>Deploy the application so the developers could poke around in the name of unix testing.</li>
+</ul>
+</p>
+<p>Luckily we had Dan North came in and replace it with an Ant script.</p>
+
+<p>If you must write one of these then please consider the following points:</p>
+
+<p><b>The parameters</b> The job of your average wrapper script it to take parameters from the command line and pass them down to your build.  In the example above, the script looks for six parameters and passes them.  But what if you have seven?  Scripts like this make me spit out my coffee.  Deal with parameters like this:
+
+<ul>
+<li><b>In Bash shell scripts,</b> use $@ to pass ALL arguments to the build.</li>
+<li><b>In Windows batch files,</b> use %* to do the same.</li>
+</ul>
+</p>
+
+<p><b>Always use relative paths,</b> unless you absolutely have to.  If your wrapper script has a relative path from your build tool (which should be checked in to the Version Control System like everything else), nobody has to mess with it.  If you have a fixed path, it will start growing logic to accommodate everybody's environment.</li>
+</p>
+<p><b>Summary:</b> be good and don't do them.  If you can't be good, be careful</p>

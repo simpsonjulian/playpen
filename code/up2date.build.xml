@@ -1,0 +1,29 @@
+<project default="archive">
+
+  <property name="build.directory" location="build" />
+  <property name="source.directory" location="src" />
+	<property name="archive" location="${build.directory}/stooges.zip" />
+
+	<fileset dir="${source.directory}" includes="*.xml" id="archive.files"/>
+
+	<target name="clean">
+	  <delete>
+     <fileset dir="${build.directory}" includes="**/*"/>
+		</delete>
+  </target>
+
+  <target name="check-archive">
+	  <echo message="Checking zip file time stamp" />
+	  <uptodate property="-archive.is.unchanged" targetfile="${archive}"> 
+		  <srcfiles refid="archive.files"/> 
+		</uptodate>
+	</target>
+
+  <target name="archive" unless="-archive.is.unchanged" depends="check-archive">
+	  <echo message="Making a zip file"/>
+		<zip file="${archive}" >
+		  <fileset refid="archive.files" /> 
+		</zip>
+  </target>
+
+</project>

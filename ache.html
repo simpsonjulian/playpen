@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>Remember it was Make that started it all.</title>
+<style lang="text/css">
+<%= File.read("xml.css") %>
+</style>
+</head>
+<body>
+
+Sometimes I have a whole meagerie of pet hates.  Today I'm just going to share one: poor target names in build files.  Yes, that's scratching the surface: there's plenty of other things to get wrong in your build.  But today's gripe is target names.   Here's an anonymised example from a real project:
+
+<%= to_html('code/r2.build.xml') %>
+
+<p>What on earth would you do but run the database tests and produce the javadoc?  Aren't the verbs superfluous here?  </p
+
+What if instead of:
+<blockquote>
+ant produce-docs
+<blockquote>
+You had
+</blockquote>
+ant db-tests docs
+</blockquote>
+
+<p>It all makes sense when you think that most build tools are evolved from make.  Make was written in [year] by [person] at [bell labs?].  Just about every unix distribution ever includes it (or a bastardized version, but that's another stoy). Microsoft implemented it.  If you're interested in build tools, have a play with make.</p>
+
+<p>Where was I?  Ah yes: make is a verb.  Make is a verb, and the target is a object.</p>
+
+<p>Make me an object.  Verb, subject, [what?], object.</p>
+
+<p>Or for short, make object.</p>
+
+<p>Once you keep the verb in the build tool, you don't feel the need to put a verb in every target.  Still, I doubt that Apache Ant would have flown with a name like <em>Jake</em> or <em>Ache</em>.  And what they have called NAnt?   Don't go renaming your build tools on my account, but when you write a target, pretend you're building with Make.</p>
+
+</body>
+</html>

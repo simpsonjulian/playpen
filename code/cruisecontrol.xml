@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<cruisecontrol>
+
+    <project name="config">
+
+        <labelincrementer defaultLabel="${project.name}-1" separator="-"/>
+
+        <listeners>
+            <currentbuildstatuslistener file="/var/spool/cruisecontrol/logs/${project.name}/currentbuildstatus.txt"/>
+        </listeners>
+   
+        <bootstrappers>
+            <svnbootstrapper localWorkingCopy="/etc/cruisecontrol"/>
+        </bootstrappers>
+
+        <modificationset quietperiod="30">
+            <svn LocalWorkingCopy="/etc/cruisecontrol"/>
+        </modificationset>
+
+        <schedule interval="60">
+            <ant antWorkingDir="/etc/cruisecontrol"
+                 antscript="/var/spool/cruisecontrol/tools/apache-ant-1.6.5/bin/ant"
+                 uselogger="true"/>
+        </schedule>
+
+        <publishers>
+            <artifactspublisher
+                file="${project.name}/build.log"
+                dest="logs/${project.name}"
+            />
+        </publishers>
+    </project>
+</cruisecontrol>

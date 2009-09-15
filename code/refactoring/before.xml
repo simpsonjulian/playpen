@@ -1,0 +1,28 @@
+<project name="unrefactored" default="compile_and_configure_web_app">
+
+	<target name="compile_and_configure_web_app">
+		<delete dir="build" />
+		<mkdir dir="build/classes" />
+		<javac srcdir="src" destdir="build/classes"/>
+		<!-- the config file  -->
+		<copy file="src/web.xml" todir="build/web.xml">
+			<filterset>
+				<filter token="DB_HOST" value="oradvdb17"/>
+			</filterset>
+		</copy>
+		<mkdir dir="build/WEB-INF/lib" />
+		<!-- build the jar file -->
+		<jar  jarfile="build/WEB-INF/lib/webapp.jar" 
+				basedir="build/classes"
+				manifest="src/manifest.mf">
+		</jar>
+		<!-- and the war file  -->
+		<war file="build/webapp.war" 
+					webxml="build/web.xml"
+					manifest="src/manifest.mf"
+					basedir="build">
+			<include name="**/*.jar" />
+		</war>
+	</target>
+
+</project>

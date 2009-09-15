@@ -1,0 +1,15 @@
+<project name="web" default="zipfile">
+
+  <property name="build.dir" value="build" />
+  <property name="tmp" value="${build.dir}/tmp" />
+
+  <target name="zipfile">
+    <copy todir="${tmp}/static/random_token">
+      <fileset dir="code" />
+    </copy>
+    <!-- more static files, you getthe idea -->
+    <zip file="${build.dir}/static.zip">
+      <fileset dir="${tmp}" />
+    </zip>
+  </target>
+</project>

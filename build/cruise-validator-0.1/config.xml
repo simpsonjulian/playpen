@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cruisecontrol>
+
+	<property name="cruisecontrol.dir" value = "/var/tmp/cruisecontrol-bin-2.7.1" />
+	<property name="logs.dir" value ="${cruisecontrol.dir}/logs" />
+	
+	<project name="config" buildafterfailed="false">
+
+		<listeners>
+			<currentbuildstatuslistener  file="${logs.dir}/${project.name}/status.txt" />
+		</listeners>
+
+		<bootstrappers>
+			<svnbootstrapper localWorkingCopy="${cruisecontrol.dir}/projects/${project.name}" />
+		</bootstrappers>
+
+		<modificationset quietperiod="0">
+			<svn localWorkingCopy="${cruisecontrol.dir}/projects/${project.name}" />
+		</modificationset>
+
+		<schedule interval="60">
+			<ant buildfile="${cruisecontrol.dir}/projects/${project.name}/build.xml" />
+		</schedule>
+
+		<log dir="${cruisecontrol.dir}/logs/${project.name}" />
+
+	</project>
+
+</cruisecontrol>

@@ -1,0 +1,16 @@
+<project default="unit_tests">
+
+	<property name="junit.enabled" value="any value will do here" />
+
+	<target name="unit_tests" if="junit.enabled"> 
+		<mkdir dir="build/test-results"/>
+		<junit>
+			<test name="FooBarImplTest" todir="build/test-results"/>
+			<classpath>
+				<fileset dir="build"/>
+				<fileset dir="lib"/>
+			</classpath>
+			<formatter type="xml"/>
+		</junit>
+	</target>
+</project>

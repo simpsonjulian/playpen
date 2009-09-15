@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>When you name a target, leave it some privacy<title>
+<style lang="text/css">
+<%= File.read("xml.css") %>
+</style>
+</head>
+<body>
+
+<p>THere's a question that I wanted to ask you, noble reader. Consider the following code snippet:</p>
+
+<%= to_html('code/r2-static.xml') %>
+
+<p>There's an assertion that in Object Oriented programming that every class should have a secret.  If your classes don't encapsulate a process and spare the rest of a system the details, then you haven't factored your object model correctly.</p>
+
+<p>So if every class in OO code should have a secret, should targets in your build have secrets?  Does that mean that you shouldn't expose (in the name of the target) how a target does what it does?  In this example, how about <strong>backend-static-archive</strong> as a target name instead of <strong>backend-zip-static</strong> ? </p>
+
+<p> The example above came from a real project.  We changed the way we deployed the app, and had to painstakingly rename the target and its references across a hierarchy of build files.  Yes, we probably shouldn't have had such a huge hierarchy of build files.  But we did.</p>
+
+<p>Should you ever expose the process that you apply inside a target? Or should the name of the target just describe the output? What do you think? Comments <i>very</i> welcome below.</p>
+
+</body>
+</html>

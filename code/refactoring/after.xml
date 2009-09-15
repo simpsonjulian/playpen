@@ -1,0 +1,37 @@
+<project name="refactored" default="default">
+	
+	<target name="clean">
+		<delete dir="build" includeemptydirs="true"/>
+		<mkdir dir="build/classes" />		
+	</target>
+	
+	<target name="web.xml">
+		<copy file="src/web.xml" todir="build/web.xml">
+			<filterset>
+				<filter token="DB_HOST" value="oradvdb17"/>
+			</filterset>
+		</copy>
+	</target>
+		
+	<target name="webapp.jar">
+		<javac srcdir="src" destdir="build/classes"/>
+		<mkdir dir="build/WEB-INF/lib" />
+		<jar  jarfile="build/WEB-INF/lib/webapp.jar" 
+				basedir="build/classes"
+				manifest="src/manifest.mf">
+		</jar>
+	</target>
+	
+	<target name="webapp.war" depends="webapp.jar,web.xml">
+		<war file="build/webapp.war" 
+					manifest="src/manifest.mf"
+					webxml="build/web.xml"
+	
+					basedir="build">
+			<include name="**/*.jar" />
+		</war>
+	</target>
+	
+	<target name="default" depends="clean, webapp.war" />
+
+</project>

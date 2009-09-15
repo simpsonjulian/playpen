@@ -1,0 +1,20 @@
+<project name="cruisevalidator" default="publish" >
+
+	<import file="build-library.xml"/>    
+    
+    <target name="validated-config" depends="cruise-validator.jar">
+    	<taskdef name="validate" classname="org.juliansimpson.ConfigValidator" classpathref="main"/>
+        <echo message="validating ${config}" />
+        <validate configFile="${config}" />
+        <validate configFile="code/cruisecontrol-bootstrapper-lockfile-snippet.xml" />
+    </target>
+    
+    <target name="publish" depends="validated-config">
+        <echo level="info" message="copying CruiseControl config to server" />
+    	<copy file="${config}" todir="${cruisecontrol.dir}" failonerror="true" description="Copy configuration to CruiseControl server" />
+        <echo level="info" message="forcing a reload of config on server" />
+        <get src="http://localhost:8000/invoke?operation=reloadConfigFile&amp;objectname=CruiseControl+Manager%3Aid%3Dunique"
+        	dest="${build.dir}/reload.html" />
+    </target>
+    
+</project>

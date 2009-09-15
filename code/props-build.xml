@@ -1,0 +1,14 @@
+<project default="properties">
+
+	<target name="properties">
+		<mkdir dir="build" />
+		<property name="value" value="build" />
+		<property name="location" location="build" />
+		<echo>
+			here's the one with a value ${value}
+			here's the one with a location ${location}
+		</echo>
+		<touch file="${value}/value.txt" />
+		<touch file="${location}/location.txt" />
+	</target>	
+</project>
