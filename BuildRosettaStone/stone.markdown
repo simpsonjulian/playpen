@@ -5,7 +5,11 @@ LaTeX preamble: preamble.tex
 [this_html]: http://media.build-doctor.com/rosetta-stone
 [this_pdf]: http://media.build-doctor.com/rosetta-stone/stone.pdf
 
+<<<<<<< HEAD:BuildRosettaStone/stone.markdown
 Build Tasks
+=======
+Build Rosetta Stone
+>>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:BuildRosettaStone/stone.markdown
 ===================
 
 Introduction
@@ -152,6 +156,7 @@ Other Tasks
 
 [^optional]: This task has additional library dependencies
 
+<<<<<<< HEAD:BuildRosettaStone/stone.markdown
 Version Control Commands
 ========================
 
@@ -161,6 +166,8 @@ Version Control Commands
 |svn co|cvs co|git clone|.|p4 co|
 |svn ci||git commit && git push|.|p4 ci|
 
+=======
+>>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:BuildRosettaStone/stone.markdown
 Notes
 -----
 Deprecated tasks are not included.

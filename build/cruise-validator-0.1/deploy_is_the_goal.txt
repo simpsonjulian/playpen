@@ -1,0 +1,57 @@
+Metaphor:
+
+manufacturing?
+
+fast food?
+
+
+
+
+
+[Deployment]
+
+Does your organization write software?  What does it do with it next?  I hope that you deploy it, forthwith.  It seems a lot of teams don't, or cannot deploy the software that they write.  Which is strange, as most of us do intend to deploy our code to production; and we should all recognize that you can't deliver the value in the software until you can see it running in a production context.
+
+In my opinion we leave deployment of software so late that the end product is harmed by the delay.
+
+Why do we delay deployment so much?  My guess is that we don't see why you should deploy the code until there's real business value to deploy.  By the time that you're ready, will you have time to get the deployment story right?  Will deployment concerns mean that your code needs to change?  
+
+I think another reason that we end up with plenty of projects writing code but being unable to deploy is that we don't train our developers to do anything but write code.  It's as if the other parts of the life-cycle don't exist.
+
+At some point in the development process you have to deploy your code in a realistic way.  We deploy code for several reasons: 
+
+- to test it, 
+- to know that the code is deployable, 
+- to ensure that the code works with the rest of the ecosystem that it will live in.
+
+These last two points seem to be lost on some project managers:  The way that you deploy code can and does change the way that you develop it.  I worked on a project where we could easily demonstrate our code running on the development operating system with all the external services stubbed out.  We never actually got the code to pass it's tests on a more realistic operating system and the production middleware. My employer at the time was removed from the project. 
+
+I have worked on many projects where we couldn't deploy the software easily to production.  Code that is built against the wrong version of the production application server; code that won't fit another department's security policy ("what do you mean, I cant connect to the Internet from there?"), and stereotypically, code that only appears to run on one developer's computer.
+
+Delaying the deployment of code that you write allows you to present outward progress ("we're delivering code every iteration") at the cost of long-term success.  It's like borrowing money against your house when you're sure that the price will rise.  When you introduce deployment to a project, it can appear to derail it.  I've had to break the news to project managers that they won't be going live when they thought they did.  But uncovering the technical debt from your project's offshore shell company means that you can pay it back, and go live.
+
+[Testing]
+
+In my perfect world, what should happen immediately after deployment is testing.  My observations on large software projects suggest to me that testing sometimes only slightly gains more exposure to the rest of the team than deployment.  I think I just explained why testing against deployed code matters.  There's another related issue.
+
+[OMG, how to do get the tester shoehorned in this article?]
+
+Testers are generally outnumbered by developers during IT projects.  	It's true that one tester should be able to verify the output of several testers.  But how do you know how many you need?  And do you make good use of the ones that you have?  [there's a point in here somewhere] It's probably the case in your organization that code spends more time waiting for someone to test it than being tested.  "No problem", you think.  "A little backlog is fine".  [But if code is queuing up it means your throughput could be too low]
+
+[Theory of constraints]
+The title of this post is a deliberate reference to Eliahu M. Goldratt's Theory of Constraints (TOC).  TOC emerged from the manufacturing industry in the 1980's [really?] and posits that we must consider the goal of an organization (or project) and align all our activities toward achieving that goal.  At any time, there will be one activity that will present a bottleneck in the throughput of your organization in reaching its goal.  There's no point in making the rest of your systems deliver any more unless you can elevate or sidestep the bottleneck.
+
+Prior to TOC, manufacturers would clog up their assembly lines with excess inventory to bring the unit cost of finished goods down.  This harmed their delivery  of the finished goods because the manufacturers would have to sift through warehouses to find the parts they needed to finish a product.
+
+There's two observations about TOC that I'd like to apply to deployment:  Deployment is one of the critical steps towards reaching your goal of software running in production; and understanding your bottleneck is critical to getting the best flow of tested software though your team.  
+
+The first point is pretty obvious; clearly you need to deploy the code.  But leaving it until the last minute would be analogous to building up an enormous inventory and then burning the midnight oil to get it through the final stage.  In TOC we aim to get a steady flow of assemblies through the factory floor and to the market.  So deploy small batches of code changes, often.  
+
+The second point tells you something about your team and the workload: where is the work piling up?  In my experience you don't often have a shortage of developers: you'll have a shortage of stories to work on, or QA's to test the code when you think you're done with a story. [eek]
+
+Why do we put so much effort into writing and building code when we don't yet know if it will deploy?  Knowing that the goal of deploying working software to a production system is key to this.  When you can examine all the efforts of the project and see that they contribute toward the goal, you're able to take corrective action.
+
+On my most recent project I was able to steal a chapter from Goldratt's book 'The Goal' and prioritize one work-stream's CI builds over anther's.  Previously developers in different streams would contend with each other for CI bandwidth; now the people working on the next version of the software had dedicated capacity.  Once I was able to prioritize the most urgent and important work through the bottleneck, we were able to improve our response times for production bug fixes or UAT fixes.
+
+In the past, developers thought that they were done if the code worked on their computer; I think we are moving on: more recently developers are happy with the notion  that if their code passes a CI build, they are done.  Just as we get there, we need to move the goal-posts [sorry] and say that once your code is deployable, you're closer to being done.  You're only done when your code is running in production - and the phone is quiet.
+

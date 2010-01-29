@@ -53,14 +53,7 @@ split process vs technical?
 
 <h1>Validating Configuration</h1>
 
-<pre>class SudoersFile &lt; Component
-  def initialize(sudoers_file)
-    sudo='/usr/sbin/visudo'
-    @command=&quot;#{sudo} -c -f #{sudoers_file}&quot;
-	@depends=&quot;sudo&quot; 
-  end
-end
-</pre>
+<%= string_to_html(Chunk.new("../infrastructure/lib/config_validator.rb","sudoers").process) %>
 
 <p>The configuration files are mainly parsed by the programs that use them; for example apache can be made to validate it's own configuration files with a little work.  In a small hetrogeneous environment that may be acceptable.  If your site maintains many versions of one application, and that application can easily parse it's config files and exit with a return code or exception so that the test code can  detect the error, that might be ok.  </p>
 

@@ -1,8 +1,4 @@
-<<<<<<< HEAD:citon.txt
-I'm sitting at gate D22 in Amsterdam's Schiphol Airport.  I got back to my hotel around 2am last night, I've just had a pastry and a beautiful double latte from Coffee Connection for breakfast.  But things are good.  CITCON Europe 2008 was well worth my mild distress this morning. 
-=======
 I'm sitting at gate D22 in Amsterdam's Shiphol Airport.  I got back to my hotel around 2am last night, I've had a pastry beautiful double latte from Coffee Connection for breakfast.  But things are good.  CITCON Europe 2008 was well worth my mild distress this morning. 
->>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:citon.txt
 
 CITCON is a free weekend conference for people who want to learn about building an testing software.  It's not directly about writing software.  There's a good number of developers who come to the conference.  They are the ones who care about getting their software deployed into production.
 

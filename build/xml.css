@@ -1,0 +1,8 @@
+.normal {}
+.namespace { color: #B66; font-weight: bold; }
+.tag { color: #F88; }
+.comment { color: #005; font-style: italic; }
+.punct { color: #447; font-weight: bold; }
+.string { color: #944; }
+.number { color: #F99; }
+.attribute { color: #BB7; }

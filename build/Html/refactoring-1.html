@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>Refactoring Ant for fun and profit</title>
+	</head>
+	<body>
+		<p>Your build files probably suck.  Sorry.  It's true.  If you're lucky enough to work on a project with clean code (and let's face it, most codebases aren't too pretty), then you're even luckier to have a nice clean build.  Wait!  Don't go getting upset, I can help you.</p>
+
+	<p>I'll be introducing some <strong>build refactorings</strong> in this series.  You can refactor code, so why not your build files?  I wrote an article about this in the ThoughtWorks Anthology.  The Pragmatic Programmers own that now so I'm writing some short articles for this blog.  BTW: I didn't see a thing from the book deal. Please use the Amazon link above if you want to buy a copy of the book.  That way my late nights won't quite be in vain.</p>
+
+	<p>Today's refactoring is <strong>extract target</strong>. Consider the following build file:
+<pre name="code" class="xml">&lt;project name="unrefactored" default="compile_and_configure_web_app"&gt;
+
+	&lt;target name="compile_and_configure_web_app"&gt;
+		&lt;delete dir="build" /&gt;
+		&lt;mkdir dir="build/classes" /&gt;
+		&lt;javac srcdir="src" destdir="build/classes"/&gt;
+		&lt;!-- the config file  --&gt;
+		&lt;copy file="src/web.xml" todir="build/web.xml"&gt;
+			&lt;filterset&gt;
+				&lt;filter token="DB_HOST" value="oradvdb17"/&gt;
+			&lt;/filterset&gt;
+		&lt;/copy&gt;
+		&lt;mkdir dir="build/WEB-INF/lib" /&gt;
+		&lt;!-- build the jar file --&gt;
+		&lt;jar  jarfile="build/WEB-INF/lib/webapp.jar" 
+				basedir="build/classes"
+				manifest="src/manifest.mf"&gt;
+		&lt;/jar&gt;
+		&lt;!-- and the war file  --&gt;
+		&lt;war file="build/webapp.war" 
+					webxml="build/web.xml"
+					manifest="src/manifest.mf"
+					basedir="build"&gt;
+			&lt;include name="**/*.jar" /&gt;
+		&lt;/war&gt;
+	&lt;/target&gt;
+
+&lt;/project&gt;
+</pre>
+	</p>
+	
+	<p>It's a bit obtuse, isn't it?  It's doing several things at once and it's difficult to see what's going on.
+		Let's start by teasing it apart into it's constituent parts:
+		<pre name="code" class="xml">&lt;project name="refactored" default="default"&gt;
+	
+	&lt;target name="clean"&gt;
+		&lt;delete dir="build" includeemptydirs="true"/&gt;
+		&lt;mkdir dir="build/classes" /&gt;		
+	&lt;/target&gt;
+	
+	&lt;target name="web.xml"&gt;
+		&lt;copy file="src/web.xml" todir="build/web.xml"&gt;
+			&lt;filterset&gt;
+				&lt;filter token="DB_HOST" value="oradvdb17"/&gt;
+			&lt;/filterset&gt;
+		&lt;/copy&gt;
+	&lt;/target&gt;
+		
+	&lt;target name="webapp.jar"&gt;
+		&lt;javac srcdir="src" destdir="build/classes"/&gt;
+		&lt;mkdir dir="build/WEB-INF/lib" /&gt;
+		&lt;jar  jarfile="build/WEB-INF/lib/webapp.jar" 
+				basedir="build/classes"
+				manifest="src/manifest.mf"&gt;
+		&lt;/jar&gt;
+	&lt;/target&gt;
+	
+	&lt;target name="webapp.war" depends="webapp.jar,web.xml"&gt;
+		&lt;war file="build/webapp.war" 
+					manifest="src/manifest.mf"
+					webxml="build/web.xml"
+	
+					basedir="build"&gt;
+			&lt;include name="**/*.jar" /&gt;
+		&lt;/war&gt;
+	&lt;/target&gt;
+	
+	&lt;target name="default" depends="clean, webapp.war" /&gt;
+
+&lt;/project&gt;
+</pre>
+	</p>
+	
+	<p>I think that's much nicer.  You don't need XML comments in the middle of your target line because each smaller target can have a descriptive name.
+	
+When you make a minor change, you're likely only to change one target.  You can contain your changes, and if  you're debugging you can run just one target if you need to.  And most importantly, it's readable.</p>
+	
+
+	</body>
+
+</html>

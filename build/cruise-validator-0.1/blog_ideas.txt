@@ -1,0 +1,220 @@
+Oh yes.  Several years of my life haven't been wasted.  let me explain.  I just discovered KDE on my new EEPC.
+
+Sometime in 2002 when I decided to get serious about Linux and use it on my desktop, I had to choose a Window manager.  I settled on KDE.  At the time GNOME just didn't feel right.  So I cheerfully ran KDE on top of Mandrake, Debian and Ubuntu until last year.
+
+Recently I made the switch to GNOME on a machine that I used at a client's and I had to admit, it was pretty good.  
+
+In January I gained a beautiful but heavy Mac Book Pro.  In February I gave it back to ThoughtWorks along with my office keys.  I bought an old G4 Mac Mini from one of the nice consultants at ThoughtWorks, and I ordered an Asus EeePC to commute with.  The EeePC fits into the rack bag on my bike.  The Mac Book Pro is probably ruining some poor consultant's back.  Now, I ride without anything on my back but my jacket.
+
+Anyhow, before the lovely Mac Book Pro, ThoughtWorks issued Dell Latitudes to all it's consultants.  I used to run Kubuntu on mine.  And before that, I was a KDE and Debian user.  
+
+Imagine my joy when i found that Kate is installed by default.  I had been using open office, but it's slow and prone to recovering documents senselessly.  back to plain text. with syntax highlighting.  Kate, you rule.
+
+-------------------
+
+just edit it – keep ci configs in svn 
+----------------------------------------------------
+
+
+
+
+
+nant and ant differences
+
+One idea that people seem to miss when writing Ant build files is the immutable nature of properties.  It's not uncommon to see attempts to check that a property exists, before setting a new value.  What people don't always realise is that once you set a property in Ant, that's it.  You want to set a new value?  Too late, old pal.  It's a done deal.
+
+Can you can get under the hood and set them? Of course.  Ant-contrib allows you to make a property mutable, and if you write a custom task or script task, you can call project.setProperty on it (there's also a safe way to call a property called (TODO, what)).  This is precisely the opposite behaviour that most people would expect to see.  I have to say it works a treat to avoid imperative logic.
+
+In the example below, the build will first attempt to read properties from a file. If it doesn't set the slplus property then, it will set the property explicitly next.
+
+<project name="properties" default="test">
+  
+  <target name="test">
+    <property file="${user.home}/.oracle.properties" />
+    <property name="sqlplus" location="${oracle.home}/bin/sqlplus" />
+  </target>
+</project>
+----------------------------------------------------
+On the role of the build master
+
+“I'll write the code. You do the deploy.  So you write the deploy scripts”.
+
+Am I the only person who thinks that statement insane?  Developers need to know how the deploy process works.  The people who run your application know a lot about making other people's software work.  They know what they would like to see.  And they understand the domain of the operating system well.  Does that mean that they are experts at writing code?
+
+In the age of polyglot programming there is no excuse for developers to avoid touching the build or the deploy.
+
+In the era of globalization there is no excuse to do things by hand.
+
+Yes, you can hire someone cheaply to do the the manual work.  Or you could hire someone to automate it.  While you are building a back office in asia, one of your competitiors just automated instead.
+
+So pair, you developer and you system administrators.  You might just learn something.
+
+
+------------------------------------------------------------------
+What I did today, March 11.
+Today we verified that our change to control CCNet had worked.  By default, CCnet will allocate a queue for each project.  A queue with one object in it doesn't slow anything down at all  So the result was that the deployments that run at midnight would pummel the server into submission.  The previous build manager had spread the builds out over a long period to stop them colliding.  I didn't like that one, because it made me think of endlessly editing crontabs in my days as a sysadmin: just when you think you have the hours between 6pm and 6am filled with all the admin jobs, one starts to run longer and spoil another.
+
+So we allocated a single queue to all the projects that run overnight.  We just had to add a queue attribute [TODO was it a queue?] to all the projects in the ccnet.config file, and it worked a treat.  It took about 20 minutes to chew through the deployments.
+
+I noticed that there was no working copy set, so I added one on a test project.  Right now we claim back one fully qualified path, but we'll get more when we invoke a plain old build.
+
+An interesting thing that I did today was generate some configs.  The projects that do overnight deploys took care of their own VCS actions.  They also just ran on a timer, so there was no information on what changes happened: they just deployed whatevet they found.  Warren and I added a block to the ccnet.config to track sourcecontrol changes, but not trigger builds.  this had the effect of making cruisecontrol report the changes in the overnight projects.
+
+I started to edit them by hand; it was horrid.  It was easier to spend an hour generating xml configuration blocks and perforce clients from Ruby, using ERB.   will be able to whizz through the configs.  The other implicaion is that we could have a purge of all the nasty old p4 clients and regenerate them from the ccnet.config xml file. That would be nice.
+
+The biggest issue is how to transition from many, many incarnations of call, to more use of dependency.  If I finish the post I might get to get some brain share on the idea.
+==========================
+My last day at ThoughtWorks
+
+It's quite straightforward: hand back your laptop, office keys and RSA key.  Have your exit interview. Decide if you ever want to work there again first.	  Kiss Lotus Notes goodbye.
+
+============================
+
+A day in the life of a build and release manager
+What I did today, March 12.
+
+Warren and I played with the pre-release CruiseControl.NET 1.4.  It has a bunch of useful new features, including:
+
+- a command line validation argument, so you can test your configs before they go live.
+- RSS publisher
+- it actually validates the P4 view, which highlighted some issues with our configuration.
+
+The most interesting thing is that Ccnet will create a perforce client on demand: funnily enough having written a ruby script to do this, I can now bin it.  Throwing away your code is always a good thing if your products make it no longer neccessary.  We have hundreds of workspaces that have been created for CruiseControl; this one change alone will help us bin those and never have to create any special ones again.
+
+Not something high on the business value front and I wouldn't want to spend more than an hour doing it.  But there's less friction by doing this.  
+
+I'm also trying to make a web service connection to a change management system.  This is a new area of interest for me.  I have never coded a web service client and I am struggling.  Time to relax and read a book about it.
+==========================================
+Drive letters: my new pet hate.
+
+===========================================
+
+Anybody who has ever used the automounter in Solaris will attest to how restrictive the idea of drive letters are.
+
+=============================
+
+more validated goodness in ccnet
+
+In this post, I showed you how to validate stuff in CruiseControl.  in today's post, here's how you do it for CruiseControl.NET!
+
+========================================
+
+Day in the life: 13 March 3008
+
+My brilliant idea to remove perforce clients from the build failed as the autoget source spent a long time updating everything in the repository.  I still need to read the source and see what happened there.
+
+I finally worked out how to access sustenuto and then got stumped by the xml support in java. It is maddening.  Will try again tomorrow.
+
+I did write a watir test as a poc.  Selenium to come.
+
+Very odd, fustrating day.
+
+============================================
+
+
+Macrodefs are your friend.
+
+We may have established[refactor your config] that I don't like duplication.  
+
+=============================================
+
+Day in the life of a build master: 14 march.
+
+CruiseControl.net has a feature called autogetsource. it's identical to a bootstrapper in CruiseControl.  When you use this feature with Perforce, there's a complication:  If you don't specify a perforce client, it will use the default client for your user.  That could have some funny effects.  Like filling up the disk on your build server.
+
+The built-in labelling however does work; you need to change the label to not be purely numeric like the default CC.NET labeller.  That could be useful.
+
+================================================
+
+Working for ThoughtWorks: Why I quit.
+
+================================================
+
+The best nant editor that I have found so far is the Ant editor for java.  I have tried nantpad, nanteditor and the other.  The syntaxes are close enough that the editor is sometimes useful for completions. 
+=================================================
+
+Jumping ship: Julian does .NET
+
+he c# language is fine.  It's all good.  It's the tooling that bothers me.
+
+Visual Studio seems restrictive. is that just me?  IDE's matter.  
+
+Nant has some really useful features, but it still seems like it has a way to go.  
+
+There really does seem to be two tracks in the .NET world.  Either use a complete toolset from Microsoft (which seems to be referred to as a pragmatic approach), or use some of the open source tooling.  I really don't care about "my stack is better than your stack" anymore: I do care about "my business makes an assload of money".  No, it's not my business, but I am a stakeholder.
+
+So is it worth some of the pain?  My ideal project would target Mono under apache.  That would allow the nice languages to be run on a platform that works.
+
+Of course, that's my bias:  I was reading a comments on a blog today about "those pesky unix guys and their command line tools! why can't they use easy to use tools with a GUI?".
+==================================================================
+Day in the life on a Build Manager.
+got fed up with perforce configuration today.  
+==================================================================
+
+DITLOABM
+19 March
+
+I finally think I found the right thing to attack the puzzle with.  The "property injection" pattern duplicated through zillions of build files is an easy place to start changing things.  As I start to default properties in it, I can start to include dynamic properties from the CI tool.
+
+==================================================================
+Build (Anti?) pattern property injection.
+
+invoke a build file. pass all the files that it needs from another build file.
+
+This works by using the [n]ant task and a nested set of properties  The kicker is that you don't let the [n]ant task inherit any properties.  That way, you need to define everything that the build file needs.  I'm working through several hundred of these, allowing us to introduce defaulted properties.  
+
+So, good when you need to call another build with absolute certainty about the proerties that are set: I've done this to effectivly "wrap" another build.
+
+Is this really a pattern?  is there such a thing as configuration injection in software?
+
+Did DB go nuts with a normal technique?
+==================================================================
+
+Okay, what have I got going on here?  
+
+I'd like to contribute something to Puppet.
+It would be nice to get a chapter in the book.
+I want Build Doctor to grow.
+I really want to earn enough to bootstrap a company from the blogging and writing.  And buy a mac.
+
+====================================================================
+
+
+e-editor and textmate support syntax highlighting in nant.  No idea how you would add actions.  
+
+=====================================================================
+
+Back to perforce.
+
+The job offer arrived on Septemer 11.  I was standing in front of the TV, horrified.  The agent couldn't have cared less. "Yes, so as i was saying, you can have a signing bonus, but they want to reduce the annual salary ...".  It didnt take a crystal ball to realise that I should be taking any work that I could get.  I took the role.  For what seemed like an eternity we were using PVCS on a Windows server.  It wasn't great.  Labelling the codebase for a deployment took 15 minutes.  Our expperience with branching wasn't too clever.  The powers that be decided on Perforce.  You know what?  It was probably their best decision.
+
+It was solid as a rock.  The developers had their IDE integration.  Perforce even developed a Linux visual client.  The perforce server was incredibly easy to maintain.  i set up the checkpoint scripts and let them run overnight.  Life was pretty good.
+
+After a 4 year break from perforce, during which time Subversion has gotten pretty good (far more stabe than it used to be, tool support getting there),  I'm back in the fold.  It's still bloody solid.  I don't rememer going so crazy with needing to check out files before editing.  That gets annoying.
+
+Even though I'm working on a .NET project, I'm finding Eclipse with perforce intaration most useful.  When you edit a file there is a perceptible (about a seccod) pause as it checks it out of perforce.
+
+=====================================================
+writing for the man
+=====================================================
+it's the little things.
+
+You know what's funny about being a build and release manager? It's the little things.  ike today.  All of our project builds are wrapped in another little build that sets properties that are appropriate for the CI environment.  I've been fuming about this for a little while now: I expect that little projects should be self-contained and not depend on things outside of their directory hierarchy.  So today I wasn't fuming.  I was reflecting.  
+
+I made our CI server trigger each project from the business code, and the funny little wrapper build.  That worked. 
+
+Where I used to have:
+
+<sourcecontrol type="p4">
+	<view>//depot/projects/MyGreatProject/trunk</view>
+	<!-- other parameters -->
+</sourcecontrol>
+
+I now have
+
+<sourcecontrol type="p4">
+	<view>//depot/projects/MyGreatProject/trunk,//depot/cruise_stuff/trunk/mygreatproject.build</view>
+	<!-- other parameters -->
+</sourcecontrol>
+
+And it works a treat!

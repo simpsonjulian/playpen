@@ -1,8 +1,4 @@
-<<<<<<< HEAD:itworksonmypc.txt
-Why shouldn't I use my IDE to build the code?
-=======
 fuckeWhy shouldn't I use my IDE to build the code?
->>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:itworksonmypc.txt
 /
 Developer: Hey, do you know why my build broke?
 
@@ -28,8 +24,4 @@ Developer: But I'm just here to write the code!
 
 BM: Sure.  Which would be fine if we ran the code on your desktop computer with your IDE open.  But in production things are different.  The build is the first step towards getting it there.  We build on a different operating system and run tests on it to make sure there's no platform issues from the developer machines.  We package it up in the right format for deploying to production systems.  And you runnnig the build before you check in means that we can get the code to production that little bit faster.
 
-<<<<<<< HEAD:itworksonmypc.txt
 Developer.  OK.  You win.  I'll run the build.
-=======
-Developer.  OK.  You win.  I'll run the build.
->>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:itworksonmypc.txt

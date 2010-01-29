@@ -31,3 +31,13 @@ end
 task :ant do
 	sh "ant cruise-validator.jar"
 end	
+<<<<<<< HEAD:Rakefile
+=======
+
+
+namespace :foo do 
+  task :default do 
+    puts "I'm the default task in namespace foo"
+  end
+end
+>>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:Rakefile

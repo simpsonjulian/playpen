@@ -28,6 +28,11 @@ def string_to_html(code)
 	return out
 end
 
+def string_to_html(string)
+  convertor = Syntax::Convertors::HTML.for_syntax("rb")
+  return convertor.convert(string)
+end
+
 def process(file)
  template=ERB.new(File.read(file))
  out = File.new(File.join("build",file),"w+") 

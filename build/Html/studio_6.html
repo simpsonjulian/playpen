@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+
+		<title>CCE Best Practices, part 6</title>
+	</head>
+	<body>
+		<h1>
+			CCE Best Practices, part 6
+		</h1>
+		<h2>
+			Scaling up CruiseControl
+		</h2>
+		<p>
+			You just started out with continuous integration. You're building your project in CruiseControl. Great. Now, it's time you started to plan ahead.  This post is about scaling up CruiseControl. The tool can scale up to many projects, but you have to know a few things.
+</p><p>
+The very first thing to do is make sure that you can simultaneously build your projects. CruiseControl uses Java threads to manage builds and projects. Each project has it's own thread. There is a least one Builder thread that will actually run a build, and there is a Build Queue, which mediates the requests from the project threads to the builder thread. You need to give CruiseControl enough builder threads to work with: by default it gives you one thread. The impact of this is that if you have 5 projects configured, you'll only ever build one at a time. This could be good if you have a tiny build server, or projects that don't play nicely together.
+		</p>
+		<p>
+			On the other hand, if you have plenty of capacity to use, you will get a boost from the extra builder threads. The right setting for the number of threads will change over time; don't hesitate to do some performance management and find the right value for your server. 
+<pre><span class="punct">&lt;</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">system</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">configuration</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">threads</span> <span class="attribute">count</span><span class="punct">=&quot;</span><span class="string">2</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">configuration</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">system</span><span class="punct">&gt;</span>
+<span class="comment">&lt;!-- rest of config file suppressed --&gt;</span>
+<span class="punct">&lt;/</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+</pre> 
+
+Jeffrey Frederick <a href="http://www.nabble.com/Cruisecontrol-2.7.1---Maximum-number-of-Threads-to15133223.html">wisely points out</a> that it is useless to set the number of builder threads to be higher than the number of projects that you have.
+		</p>
+		<p>
+			There are plenty of other factors to consider when scaling up your Continuous Integration service: the speed of your Version Control System, where you store artifacts, logs, etc. One factor that I will mention today is disk bandwidth. Building software is a disk-intensive process.  Even when a build is done compiling Java code and making archives like jars, CruiseControl has to write logfiles. It's very easy to overload a single disk with all this activity.  Ideally you want to make sure that your machine can build several projects at once.</p> <p>
+			On one of my very first projects at ThoughtWorks, the team was running two CruiseControl servers, apparently because the first Solaris server was too slow. That didn't seem right to me, so I dug deeper. My systems administration background was useful: I was able to see that the single disk that was being used was totally busy running the operating system,CruiseControl and the build. I spread the workload across the four disks in the system and the machine was able to manage many more projects.
+		</p>
+		<p>
+			This pattern has repeated itself on many of my subsequent projects. It's a very server that is constrained by processor overhead.  Unfortunately, it's often painful to rectify this once a system is up and running. So make yourself some luck and order plenty of fast disk drives before you scale up and people start to complain about the slow build!
+		</p>
+		<p>
+The way to implement this is to use the configuration file.  The <i>log</i> element is used to tell CruiseControl where to write logfiles.  By default it's a suubdirectory of the CruiseControl installation.  But if you change the value of the <i>dir</i> attribute of the logfile, you can make sure that the logs are being written to a disk that isn't already running CruiseControl.  If you're using Ant to build your code, you can uuse the <i>antWorkingDir</i> attribute on the <i>ant</i> element in the config file to make sure that your projects are built on another disk.</p>
+
+		<p>I can't really do a good example for this one as each CruiseControl instance is so different.  <a href="http://buildix.thougtworks.com">Buildix</a> is an attempt to make many installs more homogenous.  If you look at the way things are laid out on the disk, you'll see that the CruiseControl install is in <i>/usr/share/cruisecontrol</i>, but the projects and logs are installed in <i>/var/spool/cruisecontrol</i>: the reason we did this was so that you could mount the <i>/var</i> directory on another disk if things got busy.
+		</p>
+	</body>
+</html>

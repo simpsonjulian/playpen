@@ -1,0 +1,33 @@
+<html>
+<body>
+Cruisecontrol: not just for java projects.
+<p>
+In the beginning, there were programmers.  The programmers quickly discovered integration pain: "Bob! You broke the payments module again!".  Eventually a couple of guys felt the integration pain, thought "forget that" and wrote CruiseControl. Of course, this was in the days of CVS, java 1.2, and XML being considered kind of avant-guarde.
+<p>
+Cruisecontrol has a strong Java heritage.  Does that rule it out from being used to build other languages? Nope.  Don't think that it has stopped it being functional in Ruby, .NET or other languages.  In this post I'm going to write about how to take CruiseControl off the beaten track .  </p>
+
+<p>The main considerations are:
+<ul>
+<li>how do you build it?</li>
+<li>how do you get the results made visible?</li>
+</ul>
+
+<h2>How to build it</h2>
+There are several approaches you could use: wrapping in Ant, using the exec Builder, or using some of the new dedicated Builder. Here goes:
+
+<h3>Wrap your build in Ant</h3>
+
+CruiseControl and Ant go together like bread and butter.  CruiseControl and Maven work very well together too, except that Maven would rather butter the bread for you.  So it's very easy to wrap your build tool in a small Ant build.  I'd recommend that you do this if you're in a hurry.  It's very easy to take all the special properties [link here] that CruiseControl passes to Ant, and pass them down to your build, via command line arguments or environment variables.
+
+<h3>Exec it</h3>
+
+CruiseControl now sports an ExecBuilder plugin that will call to your shell (be it DOS or Unix) to invoke your real build.  I believe that there's a change in the trunk to deal with cwbuildcustom propeties. [whatdat?]
+
+<h3>Use the right  Builder for the job</h3>
+
+Even before CruiseControl.rb was released, CruiseControl had a RakeBuilder.  CruiseControl.NET only existed because a client of ThoughtWorks had refused to let Java code into their network.  Before that, we'd use CruiseControl with the NantBuilder.  PHP projects can use the Phing build tool with the PhingBuilder, and you can even chain two Builders together with the CompositeBuilder.  Whew. 
+
+<h2>Summary</h2>
+
+
+There's life in the old girl yet.

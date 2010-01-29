@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="KWord HTML Export Filter Version 466447 " />
+<title>CruiseControl Enterprise Best Practices, part 5</title>
+
+<style lang="text/css">
+.normal {}
+.namespace { color: #B66; font-weight: bold; }
+.tag { color: #F88; }
+.comment { color: #005; font-style: italic; }
+.punct { color: #447; font-weight: bold; }
+.string { color: #944; }
+.number { color: #F99; }
+.attribute { color: #BB7; }
+
+</style>
+</head>
+
+<h1>Refactor your configuration file</h1>
+<h2>CruiseControl Enterprise Best Practices, part 5</h2>
+
+<p> Tell me that you think duplication in computer systems is a good thing. I
+dare you. Drop me a comment and we'll talk about it.  I'm someone who spent the best part of ten years doing systems administration, running other people's code.  So you might guess that I'm a card carrying member of the "Duplication is evil" party.  If you're not a member too (I must work on the secret handshake!), this might not be a post for you.</p>
+
+<p>Duplication doesn't just creep into our business code.  It also seeps into the build and CI systems when you're not looking.  There's probably someone on your team who is copy-pasting something into the build right now. Don't worry about stopping them.  Read on to find out how to put the CruiseControl configuration right.</p>
+
+<p>Here's an example of duplication.  You can see that there's a load of repitition in the file.  I didn't exactly pull if from a project (I'd love to work on a project called Groucho), but it's not far away from a real life scenario.
+	<pre><span class="punct">&lt;?</span><span class="tag">xml</span> <span class="attribute">version</span><span class="punct">=&quot;</span><span class="string">1.0</span><span class="punct">&quot;?&gt;</span>
+<span class="punct">&lt;</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">chico</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/logs/chico/status.txt</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/projects/chico/</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/logs</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/projects/chico/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/projects/chico</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/ant/bin/ant</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">groucho</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/logs/groucho/status.txt</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/projects/groucho/</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/logs</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/projects/groucho/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/projects/groucho</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise/ant/bin/ant</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+<span class="punct">&lt;/</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+</pre>
+Fortunately, there is a way to keep this in check in CruiseControl.</p>
+
+<p> CruiseControl has had the feature of properties in the config.xml file since  2005.  They are modeled on Apache Ant style properties, with a dollar sign and curly braces: ${cruise.home}.  These are immediately useful in replacing constant style values in your config.xml file, like the location of your Ant script or the log directory.</p>
+
+<p>This is a huge boost, but it's not enough.  What about the things that are defined in the config file itself, like the name of the project?  The author was thinking ahead on this one: there is a magic property called ${project.name} for you to use.  It's scoped to the enclosing project so that you can't refer to chico's project harpo, or vice versa.</p>
+
+<p>Take a look at the config file now that properties have been introduced:
+<pre><span class="punct">&lt;?</span><span class="tag">xml</span> <span class="attribute">version</span><span class="punct">=&quot;</span><span class="string">1.0</span><span class="punct">&quot;?&gt;</span>
+<span class="punct">&lt;</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">cruise.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">log.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/logs/</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">projects.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/projects</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">ant.script</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/ant/bin/ant</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">chico</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${log.dir}/${project.name}/status.txt</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">${projects.dir}/${project.name}/</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${log.dir}</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${projects.dir}/${project.name}/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">${projects.dir}/${project.name}</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">${ant.script}</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">groucho</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${log.dir}/${project.name}/status.txt</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">${projects.dir}/${project.name}/</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${log.dir}</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${projects.dir}/${project.name}/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">${projects.dir}/${project.name}</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">${ant.script}</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+	
+<span class="punct">&lt;/</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+</pre>
+Things look much better.  If you wanted to change the name of the project, or one of the paths that it references, you could change it once.  But there's still some patterns that repeat themselves again and again - we can probably do better.</p>
+
+<p>There's a bit more magic to the properties.  The ${project.name} property dynamically changes depending on the enclosing project.  Not only can you use it in the middle of configuration values, but you can declare it as a part of the value of another property.  What this means for your long-suffering configureation file is that you can declare one property for the location of the project, and have that property lazily evaluate to to fit the project.  This might confused your colleagues when they look at the configuration file for the the first time - "How does the same property work in so many different cases?".
+<pre><span class="punct">&lt;?</span><span class="tag">xml</span> <span class="attribute">version</span><span class="punct">=&quot;</span><span class="string">1.0</span><span class="punct">&quot;?&gt;</span>
+<span class="punct">&lt;</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">cruise.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">log.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/logs/</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">project.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/projects/${project.name}</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">ant.script</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/ant/bin/ant</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">status.file</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${log.dir}/${project.name}/status.txt</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">chico</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${status.file}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">${project.dir}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${log.dir}</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${project.dir}/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">${project.dir}</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">${ant.script}</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">groucho</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${status.file}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">${project.dir}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${log.dir}</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${project.dir}/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">${project.dir}</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">${ant.script}</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+	
+<span class="punct">&lt;/</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+</pre>
+</p>
+
+<p>One thing that happens on bigger projects is that the configuration file becomes huge.  While you can do things like use XSLT to generate a configuration file (I've made myself some headaches that way), you can just break your configuration file into smaller chunks.  There's a great feature called &lt;include.projects&gt; in the CruiseControl configuration file - it lets you refer to another configuration file.  This works just like the &lt;import&gt; feature in Ant.  You end up maintaining one config.xml file that contains variable definitions (they work over the includes as well), and a host of smaller configuration files that contain one project's definition.  On my current project this features has made it a lot simpler to add or remove projects.  Even if someone forgets to delete the include.projects element from the config.xml when they delete the file, it doesn't matter - that project won't be imported as the file doesn't exist.  Tracking the changes to the CruiseControl configuration becomes a lot simpler as well.</p>
+<p>Here's the config.xml now:
+
+<!-- basic file with properties -->
+<pre><span class="punct">&lt;?</span><span class="tag">xml</span> <span class="attribute">version</span><span class="punct">=&quot;</span><span class="string">1.0</span><span class="punct">&quot;?&gt;</span>
+<span class="punct">&lt;</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">cruise.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">/var/tmp/cruise</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">log.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/logs/</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">project.dir</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/projects/${project.name}</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">ant.script</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${cruise.dir}/ant/bin/ant</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">property</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">status.file</span><span class="punct">&quot;</span> <span class="attribute">value</span><span class="punct">=&quot;</span><span class="string">${log.dir}/${project.name}/status.txt</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	
+	<span class="punct">&lt;</span><span class="tag">include.</span><span class="attribute">projects</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">projects/chico.xml</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">include.</span><span class="attribute">projects</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">projects/groucho.xml</span><span class="punct">&quot;</span> <span class="punct">/&gt;</span>
+	
+<span class="punct">&lt;/</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+</pre>
+</p>
+<p>
+
+And here's one of the projects.
+
+<!-- basic project file -->
+<pre><span class="punct">&lt;?</span><span class="tag">xml</span> <span class="attribute">version</span><span class="punct">=&quot;</span><span class="string">1.0</span><span class="punct">&quot;?&gt;</span>
+<span class="punct">&lt;</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;</span><span class="tag">project</span> <span class="attribute">name</span><span class="punct">=&quot;</span><span class="string">chico</span><span class="punct">&quot;</span> <span class="attribute">buildafterfailed</span><span class="punct">=&quot;</span><span class="string">false</span><span class="punct">&quot;&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">currentbuildstatuslistener</span> <span class="attribute">file</span><span class="punct">=&quot;</span><span class="string">${status.file}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">listeners</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">svnbootstrapper</span> <span class="attribute">localWorkingCopy</span><span class="punct">=&quot;</span><span class="string">${project.dir}</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">bootstrappers</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">log</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${log.dir}</span><span class="punct">&quot;&gt;</span>
+			<span class="punct">&lt;</span><span class="tag">merge</span> <span class="attribute">dir</span><span class="punct">=&quot;</span><span class="string">${project.dir}/build/test/log</span><span class="punct">&quot;/&gt;</span>
+		<span class="punct">&lt;/</span><span class="tag">log</span><span class="punct">&gt;</span>
+		<span class="punct">&lt;</span><span class="tag">schedule</span> <span class="attribute">interval</span><span class="punct">=&quot;</span><span class="string">60</span><span class="punct">&quot;&gt;</span>
+            <span class="punct">&lt;</span><span class="tag">ant</span> <span class="attribute">antWorkingDir</span><span class="punct">=&quot;</span><span class="string">${project.dir}</span><span class="punct">&quot;</span>
+             <span class="attribute">antscript</span><span class="punct">=&quot;</span><span class="string">${ant.script}</span><span class="punct">&quot;</span>
+             <span class="attribute">uselogger</span><span class="punct">=&quot;</span><span class="string">true</span><span class="punct">&quot;/&gt;</span>
+        <span class="punct">&lt;/</span><span class="tag">schedule</span><span class="punct">&gt;</span>
+	<span class="punct">&lt;/</span><span class="tag">project</span><span class="punct">&gt;</span>
+<span class="punct">&lt;/</span><span class="tag">cruisecontrol</span><span class="punct">&gt;</span>
+</pre>
+Hopefully this will help make your CruiseControl configuration file easier to maintain.  I believe that Continuous Integration should be easy, even if that puts me out of a job.
+
+</p>
+
+<p>&copy;Julian Simpson 2008. All rights reserved.</p>
+</html  >

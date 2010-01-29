@@ -10,9 +10,5 @@ One guy turned up.  He did make some good comments - thank you if you're reading
 - straightforward deployment
 - blah blah blah
 
-<<<<<<< HEAD:dotnetwhocares.txt
-So is it that the practitioners of the art are happy to deploy from their IDE?  Is configuring everything with point and click methods okay?  What do you think?  Am I wrong?
-=======
 So is it that the practitioners of the art are happy to deploy from their IDE?  Is configuring everything with point and click methods okay?  What do you think?  Am I wrong? Tell me ... 
 - 
->>>>>>> e8dbff78c96314761e54b6fc60605dd6c8660478:dotnetwhocares.txt
